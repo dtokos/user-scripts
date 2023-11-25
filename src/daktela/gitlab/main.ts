@@ -20,7 +20,17 @@ async function copyCommitAsComment(): Promise<void> {
 
 	if (autoResolvedBase !== null) {
 		const comment = await Comments.assembleComment(currentProject, autoResolvedBase);
-		await copy(render(comment));
+		const html = render(comment);
+
+		try {
+			await copy(html);
+		} catch (error) {
+			if (html) {
+				console.log(html);
+			}
+
+			throw error;
+		}
 	} else {
 		// TODO: Implement modal
 		throw Error('Comment could not be auto-resolved');
