@@ -1,12 +1,29 @@
-export type ProjectsResponse = Project[];
+export type ProjectRef = number|string;
 
-export type Project = {
-	id: number;
-	path: string;
-	path_with_namespace: string;
-};
+export type SHA = string;
 
 export type Commit = {
-	id: string;
+	id: SHA;
 	message: string;
+	web_url: string;
+};
+
+export type CommitRefType = 'branch' | 'tag';
+
+export type CommitRef = {
+	type: string;
+	name: string;
+};
+
+export type Comment = {
+	note: string;
+};
+
+export type MergeRequest = {
+	web_url: string;
+};
+
+export type Branch = {
+	name: string;
+	web_url: string;
 };

@@ -69,7 +69,7 @@ function setSuccessState(button: HTMLButtonElement): void {
 
 	button.innerHTML = '';
 	button.appendChild(iconWrapper);
-	button.insertAdjacentText('beforeend', 'Copied');
+	button.insertAdjacentText('beforeend', 'Success');
 	button.disabled = false;
 }
 

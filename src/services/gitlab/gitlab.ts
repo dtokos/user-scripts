@@ -1,19 +1,27 @@
-import { Commit, ProjectsResponse } from './types.ts';
+import { Comment, Commit, CommitRef, CommitRefType, MergeRequest, ProjectRef, SHA } from './types.ts';
 
 const BASE_URL = '/api/v4';
 
 const GitLab = {
-	projects: {
-		async search(name: string): Promise<ProjectsResponse> {
-			return get('projects', {search: name});
-		},
-	},
 	commits: {
-		async findBySha(project: number|string, sha: string): Promise<Commit> {
-			return get(`projects/${encodeURIComponent(project)}/repository/commits/${sha}`);
+		async findBySHA(project: ProjectRef, sha: SHA): Promise<Commit> {
+			return get(`projects/${e(project)}/repository/commits/${sha}`);
+		},
+		async refs(project: ProjectRef, sha: SHA, type: CommitRefType|'all' = 'all'): Promise<CommitRef[]> {
+			return get(`projects/${e(project)}/repository/commits/${sha}/refs`, {type});
+		},
+		async comments(project: ProjectRef, sha: SHA): Promise<Comment[]> {
+			return get(`projects/${e(project)}/repository/commits/${sha}/comments`);
+		},
+		async mergeRequests(project: ProjectRef, sha: SHA): Promise<MergeRequest[]> {
+			return get(`projects/${e(project)}/repository/commits/${sha}/merge_requests`);
 		},
 	},
 };
+
+function e(value: string|number|boolean): string {
+	return encodeURIComponent(value);
+}
 
 async function get<TResponse>(endpoint: string, query: Record<string, string> = {}): Promise<TResponse> {
 	const url = new URL(`${BASE_URL}/${endpoint}`, location.origin);
