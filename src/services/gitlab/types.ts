@@ -8,10 +8,10 @@ export type Commit = {
 	web_url: string;
 };
 
-export type CommitRefType = 'branch' | 'tag';
+export type RefType = 'branch' | 'tag';
 
-export type CommitRef = {
-	type: string;
+export type Ref = {
+	type: RefType;
 	name: string;
 };
 

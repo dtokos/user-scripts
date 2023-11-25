@@ -19,7 +19,7 @@ async function copyCommitAsComment(): Promise<void> {
 	const autoResolvedBase = Comments.tryAutoResolveBase(base);
 
 	if (autoResolvedBase !== null) {
-		const comment = await Comments.assembleComment(autoResolvedBase);
+		const comment = await Comments.assembleComment(currentProject, autoResolvedBase);
 		await copy(render(comment));
 	} else {
 		// TODO: Implement modal

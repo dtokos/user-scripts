@@ -1,4 +1,4 @@
-import { Comment, Commit, CommitRef, CommitRefType, MergeRequest, ProjectRef, SHA } from './types.ts';
+import { Branch, Comment, Commit, Ref, RefType, MergeRequest, ProjectRef, SHA } from './types.ts';
 
 const BASE_URL = '/api/v4';
 
@@ -7,7 +7,7 @@ const GitLab = {
 		async findBySHA(project: ProjectRef, sha: SHA): Promise<Commit> {
 			return get(`projects/${e(project)}/repository/commits/${sha}`);
 		},
-		async refs(project: ProjectRef, sha: SHA, type: CommitRefType|'all' = 'all'): Promise<CommitRef[]> {
+		async refs(project: ProjectRef, sha: SHA, type: RefType|'all' = 'all'): Promise<Ref[]> {
 			return get(`projects/${e(project)}/repository/commits/${sha}/refs`, {type});
 		},
 		async comments(project: ProjectRef, sha: SHA): Promise<Comment[]> {
@@ -15,6 +15,11 @@ const GitLab = {
 		},
 		async mergeRequests(project: ProjectRef, sha: SHA): Promise<MergeRequest[]> {
 			return get(`projects/${e(project)}/repository/commits/${sha}/merge_requests`);
+		},
+	},
+	branches: {
+		async findByName(project: ProjectRef, name: string): Promise<Branch> {
+			return get(`projects/${e(project)}/repository/branches/${e(name)}`);
 		},
 	},
 };

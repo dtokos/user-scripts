@@ -1,40 +1,13 @@
-import { Commit, CommitRef, MergeRequest, ProjectRef, SHA } from '../../services/gitlab/types.ts';
+import { ProjectRef, Ref, SHA } from '../../services/gitlab/types.ts';
 import GitLab from '../../services/gitlab/gitlab.ts';
+import Gitlab from '../../services/gitlab/gitlab.ts';
 import CherryPicks from './cherry-picks.ts';
-
-export type UnresolvedCommentBase = {
-	commit: Commit;
-	branches: CommitRef[];
-	cherryPicks: UnresolvedCherryPick[];
-	mergeRequests: MergeRequest[];
-};
-
-export type UnresolvedCherryPick = {
-	commit: Commit;
-	branches: CommitRef[];
-};
-
-export type CommentBase = {
-	commit: Commit;
-	branch: CommitRef;
-	cherryPicks: CherryPick[]
-	mergeRequests: MergeRequest[];
-};
-
-export type CherryPick = {
-	commit: Commit;
-	branch: CommitRef;
-};
-
-export type Comment = {
-	title: string;
-	message: string;
-	commits: string[];
-};
+import { Base, Comment } from './types.ts';
+import Parse from './parse.ts';
 
 const Comments = {
-	async assembleBase(project: ProjectRef, commitSHA: SHA): Promise<UnresolvedCommentBase> {
-		const commit = await GitLab.commits.findBySHA(project, commitSHA);
+	async assembleBase(project: ProjectRef, sha: SHA): Promise<Base<Ref[]>> {
+		const commit = await GitLab.commits.findBySHA(project, sha);
 
 		const [
 			branches,
@@ -42,20 +15,30 @@ const Comments = {
 			mergeRequests,
 		] = await Promise.all([
 			GitLab.commits.refs(project, commit.id, 'all'),
-			loadDirtyCherryPicks(project, commit),
+			CherryPicks.findRefs(project, commit.id),
 			GitLab.commits.mergeRequests(project, commit.id),
 		]);
 
 		return {commit, branches, cherryPicks, mergeRequests};
 	},
-	async assembleComment(base: CommentBase): Promise<Comment> {
+	async assembleComment(project: ProjectRef, base: Base<Ref>): Promise<Comment> {
+		const [branch, cherryPicks] = await Promise.all([
+			Gitlab.branches.findByName(project, base.branch.name),
+			CherryPicks.deRefAll(project, base.cherryPicks),
+		]);
+		const message = Parse.message(base.commit);
+
 		return {
-			title: base.commit.message,
-			message: base.commit.message,
-			commits: [],
+			commit: base.commit,
+			branch,
+			cherryPicks,
+			mergeRequests: base.mergeRequests,
+			title: message.title,
+			body: message.body,
+			extra: message.extra,
 		};
 	},
-	tryAutoResolveBase(base: UnresolvedCommentBase): CommentBase|null {
+	tryAutoResolveBase(base: Base<Ref[]>): Base<Ref>|null {
 		if (
 			base.branches.length > 1
 			|| base.cherryPicks.some(cherryPick => cherryPick.branches.length > 1)
@@ -65,7 +48,7 @@ const Comments = {
 
 		return this.resolveBaseUsingFirst(base);
 	},
-	resolveBaseUsingFirst(base: UnresolvedCommentBase): CommentBase {
+	resolveBaseUsingFirst(base: Base<Ref[]>): Base<Ref> {
 		return {
 			commit: base.commit,
 			branch: base.branches[0],
@@ -77,22 +60,5 @@ const Comments = {
 		};
 	},
 };
-
-async function loadDirtyCherryPicks(project: ProjectRef, commit: Commit): Promise<UnresolvedCherryPick[]> {
-	const SHAs = await CherryPicks.findSHAsForCommit(project, commit.id);
-
-	return Promise.all(
-		SHAs.map(sha => loadUnresolvedCherryPick(project, sha))
-	);
-}
-
-async function loadUnresolvedCherryPick(project: ProjectRef, sha: SHA): Promise<UnresolvedCherryPick> {
-	const [commit, branches] = await Promise.all([
-		GitLab.commits.findBySHA(project, sha),
-		GitLab.commits.refs(project, sha, 'branch'),
-	]);
-
-	return {commit, branches};
-}
 
 export default Comments;
