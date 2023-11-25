@@ -1,4 +1,4 @@
-import GitLab from '../../services/gitlab/api.ts';
+import GitLab from '../../services/gitlab/gitlab.ts';
 import { Project } from '../../services/gitlab/types.ts';
 
 type ProjectRef = Pick<Project, 'path' | 'path_with_namespace'>;
@@ -22,7 +22,7 @@ function parseRef(): Promise<ProjectRef> {
 }
 
 function loadByRef(ref: ProjectRef): Promise<Project> {
-	return GitLab.searchForProject(ref.path)
+	return GitLab.projects.search(ref.path)
 		.then(projects => {
 			const matchingProject = projects.find(
 				project => project.path_with_namespace === ref.path_with_namespace

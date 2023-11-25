@@ -1,9 +1,9 @@
 import { Commit, Project } from '../../services/gitlab/types.ts';
-import Gitlab from '../../services/gitlab/api.ts';
+import GitLab from '../../services/gitlab/gitlab.ts';
 
 function loadCurrent(project: Project): Promise<Commit> {
 	return parseSha()
-		.then(sha => Gitlab.findCommitBySha(project.id, sha));
+		.then(sha => GitLab.commits.findBySha(project.id, sha));
 }
 
 function parseSha(): Promise<string> {
