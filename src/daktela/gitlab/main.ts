@@ -1,32 +1,19 @@
-import createButton, { Button } from './button.ts';
+import createButton from './button.ts';
 import render from './render.ts';
 import copy from '../../services/copy/copy.ts';
 import comments from './comments.ts';
-
-const DURATION = 1_500;
 
 function inject(): void {
 	const header = document.querySelector('.page-content-header');
 	if (!header) return;
 
-	header.appendChild(createButton(copyCommitAsComment).element());
+	header.appendChild(createButton(copyCommitAsComment));
 }
 
-function copyCommitAsComment(button: Button): void {
-	button.setLoadingState();
-
+async function copyCommitAsComment(): Promise<void> {
 	comments.assemble()
 		.then(comment => render(comment))
-		.then(commentHtml => copy(commentHtml))
-		.then(() => {
-			button.setSuccessState();
-			setTimeout(() => button.setInitialState(), DURATION);
-		})
-		.catch(error => {
-			button.setErrorState();
-			setTimeout(() => button.setInitialState(), DURATION);
-			throw error;
-		});
+		.then(commentHtml => copy(commentHtml));
 }
 
 inject();

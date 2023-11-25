@@ -1,37 +1,24 @@
-export type Button = {
-	element: () => HTMLButtonElement;
-	setInitialState: () => void;
-	setLoadingState: () => void;
-	setSuccessState: () => void;
-	setErrorState: () => void;
-};
+const DURATION = 1_500;
 
-export type OnClick = (button: Button) => void;
+function create(onClick: () => Promise<void>): HTMLButtonElement {
+	const button = document.createElement('button');
+	setInitialState(button);
+	configureTooltip(button);
 
-function create(onClick: OnClick): Button {
-	const buttonElement = document.createElement('button');
-	setInitialState(buttonElement);
-	configureTooltip(buttonElement);
+	button.addEventListener('click', async () => {
+		setLoadingState(button);
 
-	const button: Button = {
-		element(): HTMLButtonElement {
-			return buttonElement;
-		},
-		setErrorState(): void {
-			setErrorState(buttonElement);
-		},
-		setInitialState(): void {
-			setInitialState(buttonElement);
-		},
-		setLoadingState(): void {
-			setLoadingState(buttonElement);
-		},
-		setSuccessState(): void {
-			setSuccessState(buttonElement);
-		},
-	};
+		try {
+			await onClick();
+			setSuccessState(button);
+			setTimeout(() => setInitialState(button), DURATION);
+		} catch (error) {
+			setErrorState(button);
+			setTimeout(() => setInitialState(button), DURATION);
 
-	buttonElement.addEventListener('click', () => onClick(button));
+			throw error;
+		}
+	});
 
 	return button;
 }
