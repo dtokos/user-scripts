@@ -7,7 +7,7 @@ export default defineConfig({
 	build: {
 		lib: {
 			entry: {
-				'daktela-gitlab': './src/daktela/gitlab/user-script.ts',
+				'daktela-gitlab': './src/daktela/gitlab/main.ts',
 			},
 			formats: ['es'],
 		},
