@@ -7,7 +7,7 @@
 (function() {
 	const script = document.createElement('script');
 	script.type = 'text/javascript';
-	script.src = 'https://raw.githubusercontent.com/dtokos/user-scripts/main/dist/daktela-gitlab.js';
+	script.src = 'https://dtokos.github.io/user-scripts/dist/daktela-gitlab.js';
 
 	const head = document.querySelector('head');
 
@@ -16,4 +16,4 @@
 	}
 
 	head.appendChild(script);
-});
+})();
