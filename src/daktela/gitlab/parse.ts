@@ -3,7 +3,7 @@ import { Commit } from '../../services/gitlab/types.ts';
 
 const Parse = {
 	message(commit: Commit): Message {
-		const message: Message = {title: '', body: '', extra: {}};
+		const message: Message = {title: '', body: '', ticket: undefined, extra: {}};
 		const lines = commit.message.split('\n')
 			.map(line => line.trim());
 
@@ -33,9 +33,9 @@ function parseTitle(lines: string[]): string {
 
 function processNextLine(message: Message, lines: string[]): boolean {
 	return (
-		skipTickets(lines)
-		|| skipCherryPicks(lines)
+		skipCherryPicks(lines)
 		|| collapseEmptyLines(message, lines)
+		|| parseTicket(message, lines)
 		|| parseExtra(message, lines)
 		|| parseBody(message, lines)
 	);
@@ -43,10 +43,6 @@ function processNextLine(message: Message, lines: string[]): boolean {
 
 function skipEmptyLines(lines: string[]): boolean {
 	return skipWithPattern(lines, /^\s*$/);
-}
-
-function skipTickets(lines: string[]): boolean {
-	return skipWithPattern(lines, /ticket\s*:\s*http/i);
 }
 
 function skipCherryPicks(lines: string[]): boolean {
@@ -75,6 +71,21 @@ function collapseEmptyLines(message: Message, lines: string[]): boolean {
 	}
 
 	return didCollapse;
+}
+
+function parseTicket(message: Message, lines: string[]): boolean {
+	if (lines.length) {
+		const match = lines[0].match(/ticket\s*:\s*(http.*)/i);
+
+		if (!match) {
+			return false;
+		}
+
+		message.ticket = match[1].trim();
+		lines.shift();
+	}
+
+	return true;
 }
 
 function parseExtra(message: Message, lines: string[]) {

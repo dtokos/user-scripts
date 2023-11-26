@@ -27,15 +27,17 @@ const icons = {
 		return icon;
 	},
 	close(): SVGSVGElement {
-		const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-		use.setAttribute('href', '/assets/icons-7f1680a3670112fe4c8ef57b9dfb93f0f61b43a2a479d7abd6c83bcb724b9201.svg#close');
+		const icon = svgIcon('/assets/icons-7f1680a3670112fe4c8ef57b9dfb93f0f61b43a2a479d7abd6c83bcb724b9201.svg#close');
+		icon.classList.add('gl-button-icon');
 
-		const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-		svg.classList.add('gl-button-icon', 's16');
-		svg.appendChild(use);
-
-		return svg;
+		return icon;
 	},
+	clipboard(): SVGSVGElement {
+		const icon = svgIcon('/assets/icons-7f1680a3670112fe4c8ef57b9dfb93f0f61b43a2a479d7abd6c83bcb724b9201.svg#copy-to-clipboard');
+		icon.classList.add('gl-icon');
+
+		return icon;
+	}
 };
 
 function wrappedSVGIcon(href: string): HTMLSpanElement {

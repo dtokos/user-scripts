@@ -19,6 +19,9 @@ const margins = {
 	r(size: Margin): string {
 		return `gl-mr-${marginMap[size]}`;
 	},
+	b(size: Margin): string {
+		return `gl-mb-${marginMap[size]}`;
+	},
 };
 
 export default margins;

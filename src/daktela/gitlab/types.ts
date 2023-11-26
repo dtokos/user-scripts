@@ -10,6 +10,7 @@ export type Base<T> = CommitWithBranch<T> & {
 export type Message = {
 	title: string;
 	body: string;
+	ticket?: string;
 	extra: Record<string, string[]>;
 };
 export type Comment = Base<Branch> & Message;

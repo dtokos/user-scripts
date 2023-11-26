@@ -3,6 +3,8 @@ import buttons, { Variant as ButtonVariant } from './buttons.ts';
 
 export type ModalBuilder = {
 	setTitle: (title: string) => ModalBuilder;
+	setBody: (body: HTMLElement) => ModalBuilder;
+	appendBody: (body: HTMLElement) => ModalBuilder;
 	addButton: (title: string, variant?: ButtonVariant) => ModalBuilder;
 	addCloseButton: (title?: string) => ModalBuilder;
 	build: () => Modal;
@@ -14,16 +16,16 @@ export type Modal = {
 };
 
 type Config = {
-	id: string,
 	title: string,
+	body: HTMLElement[],
 	buttons: HTMLButtonElement[],
 };
 
 const modals = {
-	make(id: string): ModalBuilder {
+	make(): ModalBuilder {
 		const config: Config = {
-			id,
 			title: '',
+			body: [],
 			buttons: [],
 		};
 		let element: HTMLDivElement|undefined = undefined;
@@ -31,6 +33,14 @@ const modals = {
 		return {
 			setTitle(title: string): ModalBuilder {
 				config.title = title;
+				return this;
+			},
+			setBody(body: HTMLElement): ModalBuilder {
+				config.body = [body];
+				return this;
+			},
+			appendBody(body: HTMLElement): ModalBuilder {
+				config.body.push(body);
 				return this;
 			},
 			addButton(title: string, variant: ButtonVariant = 'default'): ModalBuilder {
@@ -47,7 +57,7 @@ const modals = {
 			build(): Modal {
 				return {
 					open(): void {
-						element = buildElement(config);
+						element = buildModal(config);
 						$(element).on('hidden.bs.modal', event => event.target.remove());
 						document.body.appendChild(element);
 
@@ -64,7 +74,25 @@ const modals = {
 	},
 };
 
-function buildElement(config: Config): HTMLDivElement {
+function buildModal(config: Config): HTMLDivElement {
+	const content = document.createElement('div');
+	content.classList.add('modal-content');
+	content.appendChild(buildHeader(config));
+	content.appendChild(buildBody(config));
+	content.appendChild(buildFooter(config));
+
+	const dialog = document.createElement('div');
+	dialog.classList.add('modal-dialog');
+	dialog.appendChild(content);
+
+	const modal = document.createElement('div');
+	modal.classList.add('modal', 'fade', 'gl-modal');
+	modal.appendChild(dialog);
+
+	return modal;
+}
+
+function buildHeader(config: Config): HTMLDivElement {
 	const title = document.createElement('h4');
 	title.classList.add('modal-title');
 	title.textContent = config.title;
@@ -79,25 +107,23 @@ function buildElement(config: Config): HTMLDivElement {
 	header.appendChild(title);
 	header.appendChild(close);
 
+	return header;
+}
+
+function buildBody(config: Config): HTMLDivElement {
+	const body = document.createElement('div');
+	body.classList.add('modal-body');
+	config.body.forEach(element => body.appendChild(element));
+
+	return body;
+}
+
+function buildFooter(config: Config): HTMLDivElement {
 	const footer = document.createElement('div');
 	footer.classList.add('modal-footer');
 	config.buttons.forEach(button => footer.appendChild(button));
 
-	const content = document.createElement('div');
-	content.classList.add('modal-content');
-	content.appendChild(header);
-	content.appendChild(footer);
-
-	const dialog = document.createElement('div');
-	dialog.classList.add('modal-dialog');
-	dialog.appendChild(content);
-
-	const modal = document.createElement('div');
-	modal.id = config.id;
-	modal.classList.add('modal', 'fade', 'gl-modal');
-	modal.appendChild(dialog);
-
-	return modal;
+	return footer;
 }
 
 export default modals;

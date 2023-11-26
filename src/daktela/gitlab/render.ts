@@ -37,7 +37,7 @@ function render(comment: Comment): string {
 }
 
 function renderTitle(comment: Comment): string {
-	return `<p>${comment.title}</p>`;
+	return `<p><strong>${comment.title}</strong></p>`;
 }
 
 function renderCommits(comment: Comment): string {

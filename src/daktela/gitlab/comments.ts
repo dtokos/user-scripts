@@ -35,6 +35,7 @@ const Comments = {
 			mergeRequests: base.mergeRequests,
 			title: message.title,
 			body: message.body,
+			ticket: message.ticket,
 			extra: message.extra,
 		};
 	},
