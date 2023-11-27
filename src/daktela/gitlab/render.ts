@@ -57,7 +57,7 @@ function renderCommit(commit: Commit): string {
 }
 
 function renderMergeRequests(comment: Comment): string {
-	return renderListWithTitle('Merge requests', comment.mergeRequests.map(mr => mr.web_url));
+	return renderListWithTitle('Merge requests', comment.mergeRequests.map(mr => linkify(mr.web_url)));
 }
 
 function renderExtra(comment: Comment): string {

@@ -44,7 +44,7 @@ const l = {
   6: "6",
   7: "7",
   8: "8"
-}, E = {
+}, B = {
   l(t) {
     return `gl-ml-${l[t]}`;
   },
@@ -58,7 +58,7 @@ const l = {
   attach(t, e, n = "top") {
     t.dataset.toggle = "tooltip", t.dataset.title = e, t.dataset.placement = n, t.dataset.container = "body";
   }
-}, B = {
+}, R = {
   default: "btn-default"
 }, f = {
   default(t = "") {
@@ -66,13 +66,13 @@ const l = {
   },
   make(t = "", e = "default") {
     const n = document.createElement("button");
-    return n.textContent = t, n.classList.add("btn", "gl-button", B[e]), n;
+    return n.textContent = t, n.classList.add("btn", "gl-button", R[e]), n;
   },
   copy(t) {
     const e = document.createElement("button");
     return e.classList.add("btn", "btn-clipboard", "gl-button", "btn-default-tertiary", "btn-icon", "btn-sm"), e.dataset.clipboardText = t, v.attach(e, "Copy"), e.appendChild(b.clipboard()), e;
   }
-}, R = {
+}, S = {
   make() {
     const t = {
       title: "",
@@ -100,7 +100,7 @@ const l = {
       build() {
         return {
           open() {
-            e = S(t), $(e).on("hidden.bs.modal", (n) => n.target.remove()), document.body.appendChild(e), $(e).modal("show");
+            e = A(t), $(e).on("hidden.bs.modal", (n) => n.target.remove()), document.body.appendChild(e), $(e).modal("show");
           },
           close() {
             e !== void 0 && $(e).modal("hide");
@@ -110,15 +110,15 @@ const l = {
     };
   }
 };
-function S(t) {
+function A(t) {
   const e = document.createElement("div");
-  e.classList.add("modal-content"), e.appendChild(A(t)), e.appendChild(T(t)), e.appendChild(j(t));
+  e.classList.add("modal-content"), e.appendChild(T(t)), e.appendChild(j(t)), e.appendChild(P(t));
   const n = document.createElement("div");
   n.classList.add("modal-dialog"), n.appendChild(e);
   const r = document.createElement("div");
   return r.classList.add("modal", "fade", "gl-modal"), r.appendChild(n), r;
 }
-function A(t) {
+function T(t) {
   const e = document.createElement("h4");
   e.classList.add("modal-title"), e.textContent = t.title;
   const n = document.createElement("button");
@@ -126,47 +126,47 @@ function A(t) {
   const r = document.createElement("div");
   return r.classList.add("modal-header"), r.appendChild(e), r.appendChild(n), r;
 }
-function T(t) {
+function j(t) {
   const e = document.createElement("div");
   return e.classList.add("modal-body"), t.body.forEach((n) => e.appendChild(n)), e;
 }
-function j(t) {
+function P(t) {
   const e = document.createElement("div");
   return e.classList.add("modal-footer"), t.buttons.forEach((n) => e.appendChild(n)), e;
 }
-const P = {
+const M = {
   textArea(t = "", e = !1) {
     const n = document.createElement("textarea");
     return n.classList.add("gl-form-input", "gl-form-textarea", "form-control"), n.value = t, n.readOnly = e, n;
   }
-}, M = {
+}, q = {
   justifyBetween(...t) {
     const e = document.createElement("div");
     return e.classList.add("gl-display-flex", "gl-justify-content-space-between"), t.forEach((n) => e.appendChild(n)), e;
   }
-}, q = {
+}, H = {
   external(t, e = void 0) {
     const n = document.createElement("a");
     return n.href = t, n.textContent = e ?? t, n.target = "_blank", n.rel = "noreferrer noopener", n;
   }
 }, s = {
-  margins: E,
+  margins: B,
   icons: b,
   tooltip: v,
-  containers: M,
+  containers: q,
   buttons: f,
-  links: q,
-  inputs: P,
-  modals: R
+  links: H,
+  inputs: M,
+  modals: S
 }, w = 1500;
-function H(t) {
+function _(t) {
   const e = s.buttons.default();
   return e.classList.add(s.margins.l(3)), s.tooltip.attach(e, "Copy commit message as Daktela comment", "bottom"), u(e), e.addEventListener("click", async () => {
-    _(e);
+    N(e);
     try {
-      await t(), N(e), setTimeout(() => u(e), w);
+      await t(), U(e), setTimeout(() => u(e), w);
     } catch (n) {
-      throw U(e), setTimeout(() => u(e), w), n;
+      throw D(e), setTimeout(() => u(e), w), n;
     }
   }), e;
 }
@@ -174,19 +174,19 @@ function u(t) {
   const e = s.icons.daktela();
   e.classList.add(s.margins.r(3)), t.innerHTML = "", t.appendChild(e), t.insertAdjacentText("beforeend", "Daktela comment"), t.disabled = !1;
 }
-function _(t) {
+function N(t) {
   const e = s.icons.spinner();
   e.classList.add(s.margins.r(3)), t.innerHTML = "", t.appendChild(e), t.insertAdjacentText("beforeend", "Loading..."), t.disabled = !0;
 }
-function N(t) {
+function U(t) {
   const e = s.icons.checkCircle();
   e.classList.add(s.margins.r(3)), t.innerHTML = "", t.appendChild(e), t.insertAdjacentText("beforeend", "Success"), t.disabled = !1;
 }
-function U(t) {
+function D(t) {
   const e = s.icons.crossCircle();
   e.classList.add(s.margins.r(3)), t.innerHTML = "", t.appendChild(e), t.insertAdjacentText("beforeend", "Error"), t.disabled = !1;
 }
-const D = [
+const F = [
   "Menlo",
   "'DejaVu Sans Mono'",
   "'Liberation Mono'",
@@ -196,8 +196,8 @@ const D = [
   "'andale mono'",
   "'lucida console'",
   "monospace"
-].join(", "), F = [
-  `font-family:${D}`,
+].join(", "), I = [
+  `font-family:${F}`,
   "font-size:0.8125rem",
   "margin-top:8px",
   "margin-bottom:8px",
@@ -207,46 +207,46 @@ const D = [
   "border-style:none none none solid",
   "border-color:#444444"
 ].join(";");
-function I(t) {
-  return O(t) + Y(t) + z(t) + J(t) + K(t);
-}
 function O(t) {
-  return `<p><strong>${t.title}</strong></p>`;
+  return Y(t) + G(t) + J(t) + K(t) + Q(t);
 }
 function Y(t) {
-  return y("Commits", G([t].concat(t.cherryPicks)));
+  return `<p><strong>${t.title}</strong></p>`;
 }
 function G(t) {
-  return t.map((e) => `${V(e.branch)} ${W(e.commit)}`);
+  return y("Commits", V([t].concat(t.cherryPicks)));
 }
 function V(t) {
-  return g(t.name, t.web_url);
+  return t.map((e) => `${W(e.branch)} ${z(e.commit)}`);
 }
 function W(t) {
-  return g(t.web_url, t.web_url);
+  return g(t.name, t.web_url);
 }
 function z(t) {
-  return y("Merge requests", t.mergeRequests.map((e) => e.web_url));
+  return g(t.web_url, t.web_url);
 }
 function J(t) {
-  return Object.entries(t.extra).reduce((e, [n, r]) => e + y(n, X(r), !0), "");
+  return y("Merge requests", t.mergeRequests.map((e) => x(e.web_url)));
 }
 function K(t) {
-  return t.body === "" ? "" : `<p>Notes (copied from commit message):</p><pre style="${F}">${t.body}</pre>`;
-}
-function y(t, e, n = !1) {
-  return e.length ? e.length === 1 && n ? `<p>${t}: ${e[0]}</p>` : `<p>${t}:</p>` + Q(e) : "";
+  return Object.entries(t.extra).reduce((e, [n, r]) => e + y(n, Z(r), !0), "");
 }
 function Q(t) {
+  return t.body === "" ? "" : `<p>Notes (copied from commit message):</p><pre style="${I}">${t.body}</pre>`;
+}
+function y(t, e, n = !1) {
+  return e.length ? e.length === 1 && n ? `<p>${t}: ${e[0]}</p>` : `<p>${t}:</p>` + X(e) : "";
+}
+function X(t) {
   return `<ul>${t.map((e) => `<li>${e}</li>`).join("")}</ul>`;
 }
 function g(t, e) {
   return `<a href="${e}" target="_blank" rel="noreferrer noopener">${t}</a>`;
 }
-function X(t) {
-  return t.map(Z);
-}
 function Z(t) {
+  return t.map(x);
+}
+function x(t) {
   try {
     return g(t, new URL(t).toString());
   } catch {
@@ -334,12 +334,12 @@ function ot(t, e) {
   return at(e) || ct(t, e) || it(t, e) || dt(t, e) || lt(t, e);
 }
 function h(t) {
-  return x(t, /^\s*$/);
+  return E(t, /^\s*$/);
 }
 function at(t) {
-  return x(t, /\(.*cherry.*picked.*\)/i);
+  return E(t, /\(.*cherry.*picked.*\)/i);
 }
-function x(t, e) {
+function E(t, e) {
   let n = !1;
   for (; t.length && t[0].match(e); )
     t.shift(), n = !0;
@@ -448,7 +448,7 @@ function mt(t) {
 }
 function pt() {
   const t = document.querySelector(".page-content-header");
-  t && t.appendChild(H(ft));
+  t && t.appendChild(_(ft));
 }
 async function ft() {
   const t = k.projects.ref(), e = k.commits.sha(), n = await m.assembleBase(t, e), r = m.resolveBaseUsingFirst(n);
@@ -459,7 +459,7 @@ async function ft() {
     throw Error("Comment could not be auto-resolved");
 }
 function ht(t) {
-  ut(I(t), bt(t));
+  ut(O(t), bt(t));
 }
 function bt(t) {
   if (!t.ticket)
