@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        GitLab commit
 // @description This is your new file, start writing code
-// @match       https://gitlab.daktela.com/v5/*/-/*
+// @match       https://gitlab.daktela.com/v5/*/-/commit/*
 // ==/UserScript==
 
 (function() {
