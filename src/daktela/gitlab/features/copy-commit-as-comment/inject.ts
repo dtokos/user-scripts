@@ -1,19 +1,39 @@
-import createButton from '../../button.ts';
 import Current from '../../current.ts';
 import copyCommitAsComment from './feature.ts';
+import { ProjectRef, SHA } from '../../../../services/gitlab/types.ts';
+import UI from '../../../../services/gitlab/ui.ts';
 
 function inject(): void {
-	const header = document.querySelector('.page-content-header');
-	if (!header) return;
-
-	header.appendChild(createButton(processComment));
+	injectOnCommitDetailPage();
 }
 
-async function processComment(): Promise<void> {
-	const currentProject = Current.projects.ref();
-	const currentSHA = Current.commits.sha();
+function injectOnCommitDetailPage(): void {
+	try {
+		const header = document.querySelector('.page-content-header');
 
-	await copyCommitAsComment(currentProject, currentSHA);
+		if (!header) {
+			return;
+		}
+
+		const ref = Current.projects.ref();
+		const sha = Current.commits.sha();
+
+		const button = makeButton(ref, sha);
+		button.classList.add(UI.margins.l(3));
+
+		header.appendChild(button);
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+function makeButton(ref: ProjectRef, sha: SHA): HTMLButtonElement {
+	const icon = UI.icons.daktela();
+	icon.classList.add(UI.margins.r(3));
+
+	return UI.buttons.asyncButton(icon, 'Daktela comment', async () => {
+		await copyCommitAsComment(ref, sha);
+	});
 }
 
 export default inject;
