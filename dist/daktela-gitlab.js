@@ -186,74 +186,24 @@ function D(t) {
   const e = s.icons.crossCircle();
   e.classList.add(s.margins.r(3)), t.innerHTML = "", t.appendChild(e), t.insertAdjacentText("beforeend", "Error"), t.disabled = !1;
 }
-const F = [
-  "Menlo",
-  "'DejaVu Sans Mono'",
-  "'Liberation Mono'",
-  "Consolas",
-  "'Ubuntu Mono'",
-  "'Courier New'",
-  "'andale mono'",
-  "'lucida console'",
-  "monospace"
-].join(", "), I = [
-  `font-family:${F}`,
-  "font-size:0.8125rem",
-  "margin-top:8px",
-  "margin-bottom:8px",
-  "color:#999999",
-  "padding:8px 0 8px 8px",
-  "border-width:0 0 0 3px",
-  "border-style:none none none solid",
-  "border-color:#444444"
-].join(";");
-function O(t) {
-  return Y(t) + G(t) + J(t) + K(t) + Q(t);
-}
-function Y(t) {
-  return `<p><strong>${t.title}</strong></p>`;
-}
-function G(t) {
-  return y("Commits", V([t].concat(t.cherryPicks)));
-}
-function V(t) {
-  return t.map((e) => `${W(e.branch)} ${z(e.commit)}`);
-}
-function W(t) {
-  return g(t.name, t.web_url);
-}
-function z(t) {
-  return g(t.web_url, t.web_url);
-}
-function J(t) {
-  return y("Merge requests", t.mergeRequests.map((e) => x(e.web_url)));
-}
-function K(t) {
-  return Object.entries(t.extra).reduce((e, [n, r]) => e + y(n, Z(r), !0), "");
-}
-function Q(t) {
-  return t.body === "" ? "" : `<p>Notes (copied from commit message):</p><pre style="${I}">${t.body}</pre>`;
-}
-function y(t, e, n = !1) {
-  return e.length ? e.length === 1 && n ? `<p>${t}: ${e[0]}</p>` : `<p>${t}:</p>` + X(e) : "";
-}
-function X(t) {
-  return `<ul>${t.map((e) => `<li>${e}</li>`).join("")}</ul>`;
-}
-function g(t, e) {
-  return `<a href="${e}" target="_blank" rel="noreferrer noopener">${t}</a>`;
-}
-function Z(t) {
-  return t.map(x);
-}
-function x(t) {
-  try {
-    return g(t, new URL(t).toString());
-  } catch {
-    return t;
+const L = {
+  projects: {
+    ref() {
+      const t = location.pathname.match(/^\/?(.*)\/-\//);
+      if (!t)
+        throw Error(`Could not parse project ref: ${location.pathname}`);
+      return t[1];
+    }
+  },
+  commits: {
+    sha() {
+      const t = location.pathname.match(/\/-\/commit\/(\w+)/);
+      if (!t)
+        throw Error(`Could not parse commit SHA: ${location.pathname}`);
+      return t[1];
+    }
   }
-}
-const tt = "/api/v4", a = {
+}, F = "/api/v4", a = {
   commits: {
     async findBySHA(t, e) {
       return i(`projects/${c(t)}/repository/commits/${e}`);
@@ -278,12 +228,12 @@ function c(t) {
   return encodeURIComponent(t);
 }
 async function i(t, e = {}) {
-  const n = new URL(`${tt}/${t}`, location.origin);
+  const n = new URL(`${F}/${t}`, location.origin);
   return Object.entries(e).forEach(([o, d]) => n.searchParams.append(o, d)), await (await fetch(n)).json();
 }
-const L = {
+const k = {
   async findRefs(t, e) {
-    const n = await et(t, e);
+    const n = await I(t, e);
     return Promise.all(
       n.map((r) => this.findRef(t, r))
     );
@@ -305,52 +255,52 @@ const L = {
     return { commit: e.commit, branch: n };
   }
 };
-async function et(t, e) {
+async function I(t, e) {
   const n = await a.commits.comments(t, e);
-  return nt(n);
+  return O(n);
 }
-function nt(t) {
+function O(t) {
   return t.reduce((e, n) => {
     const r = n.note.match(/mentioned\s+in\s+commit\s+(\w+)/i);
     return r !== null && e.push(r[1]), e;
   }, []);
 }
-const rt = {
+const Y = {
   message(t) {
     const e = { title: "", body: "", ticket: void 0, extra: {} }, n = t.message.split(`
 `).map((r) => r.trim());
-    for (h(n), e.title = st(n), h(n); n.length; )
-      ot(e, n);
+    for (h(n), e.title = G(n), h(n); n.length; )
+      V(e, n);
     return e.body = e.body.trim(), e;
   }
 };
-function st(t) {
+function G(t) {
   const e = t.shift();
   if (e === void 0)
     throw Error("Could not parse commit title");
   return e.replace(/\s*#\s*\d+\s*$/, "");
 }
-function ot(t, e) {
-  return at(e) || ct(t, e) || it(t, e) || dt(t, e) || lt(t, e);
+function V(t, e) {
+  return W(e) || z(t, e) || J(t, e) || K(t, e) || Q(t, e);
 }
 function h(t) {
-  return E(t, /^\s*$/);
+  return x(t, /^\s*$/);
 }
-function at(t) {
-  return E(t, /\(.*cherry.*picked.*\)/i);
+function W(t) {
+  return x(t, /\(.*cherry.*picked.*\)/i);
 }
-function E(t, e) {
+function x(t, e) {
   let n = !1;
   for (; t.length && t[0].match(e); )
     t.shift(), n = !0;
   return n;
 }
-function ct(t, e) {
+function z(t, e) {
   let n = !1;
   return e.length && e[0].match(/^\s*$/) && (t.body += `
 `, n = !0, h(e)), n;
 }
-function it(t, e) {
+function J(t, e) {
   if (e.length) {
     const n = e[0].match(/ticket\s*:\s*(http.*)/i);
     if (!n)
@@ -359,7 +309,7 @@ function it(t, e) {
   }
   return !0;
 }
-function dt(t, e) {
+function K(t, e) {
   if (e.length) {
     const n = e[0].match(/^([^:]+):\s*(http.*)/i);
     if (!n)
@@ -369,7 +319,7 @@ function dt(t, e) {
   }
   return !0;
 }
-function lt(t, e) {
+function Q(t, e) {
   const n = e.shift();
   return n !== void 0 && (t.body += `${n}
 `), n !== void 0;
@@ -382,7 +332,7 @@ const m = {
       d
     ] = await Promise.all([
       a.commits.refs(t, n.id, "all"),
-      L.findRefs(t, n.id),
+      k.findRefs(t, n.id),
       a.commits.mergeRequests(t, n.id)
     ]);
     return { commit: n, branches: r, cherryPicks: o, mergeRequests: d };
@@ -390,8 +340,8 @@ const m = {
   async assembleComment(t, e) {
     const [n, r] = await Promise.all([
       a.branches.findByName(t, e.branch.name),
-      L.deRefAll(t, e.cherryPicks)
-    ]), o = rt.message(e.commit);
+      k.deRefAll(t, e.cherryPicks)
+    ]), o = Y.message(e.commit);
     return {
       commit: e.commit,
       branch: n,
@@ -417,55 +367,109 @@ const m = {
       mergeRequests: t.mergeRequests
     };
   }
-}, k = {
-  projects: {
-    ref() {
-      const t = location.pathname.match(/^\/?(.*)\/-\//);
-      if (!t)
-        throw Error(`Could not parse project ref: ${location.pathname}`);
-      return t[1];
-    }
-  },
-  commits: {
-    sha() {
-      const t = location.pathname.match(/\/-\/commit\/(\w+)/);
-      if (!t)
-        throw Error(`Could not parse commit SHA: ${location.pathname}`);
-      return t[1];
-    }
-  }
 };
-function ut(t, e = void 0) {
+function X(t, e = void 0) {
   const n = s.containers.justifyBetween(
-    mt(e),
+    Z(e),
     s.buttons.copy(t)
   );
   n.classList.add(s.margins.b(2)), s.modals.make().setTitle("Copy").appendBody(n).appendBody(s.inputs.textArea(t, !0)).addCloseButton().build().open();
 }
-function mt(t) {
+function Z(t) {
   const e = document.createElement("div");
   return t !== void 0 && e.appendChild(t), e;
 }
-function pt() {
-  const t = document.querySelector(".page-content-header");
-  t && t.appendChild(_(ft));
+const tt = [
+  "Menlo",
+  "'DejaVu Sans Mono'",
+  "'Liberation Mono'",
+  "Consolas",
+  "'Ubuntu Mono'",
+  "'Courier New'",
+  "'andale mono'",
+  "'lucida console'",
+  "monospace"
+].join(", "), et = [
+  `font-family:${tt}`,
+  "font-size:0.8125rem",
+  "margin-top:8px",
+  "margin-bottom:8px",
+  "color:#999999",
+  "padding:8px 0 8px 8px",
+  "border-width:0 0 0 3px",
+  "border-style:none none none solid",
+  "border-color:#444444"
+].join(";");
+function nt(t) {
+  return rt(t) + st(t) + it(t) + dt(t) + lt(t);
 }
-async function ft() {
-  const t = k.projects.ref(), e = k.commits.sha(), n = await m.assembleBase(t, e), r = m.resolveBaseUsingFirst(n);
+function rt(t) {
+  return `<p><strong>${t.title}</strong></p>`;
+}
+function st(t) {
+  return y("Commits", ot([t].concat(t.cherryPicks)));
+}
+function ot(t) {
+  return t.map((e) => `${at(e.branch)} ${ct(e.commit)}`);
+}
+function at(t) {
+  return g(t.name, t.web_url);
+}
+function ct(t) {
+  return g(t.web_url, t.web_url);
+}
+function it(t) {
+  return y("Merge requests", t.mergeRequests.map((e) => E(e.web_url)));
+}
+function dt(t) {
+  return Object.entries(t.extra).reduce((e, [n, r]) => e + y(n, mt(r), !0), "");
+}
+function lt(t) {
+  return t.body === "" ? "" : `<p>Notes (copied from commit message):</p><pre style="${et}">${t.body}</pre>`;
+}
+function y(t, e, n = !1) {
+  return e.length ? e.length === 1 && n ? `<p>${t}: ${e[0]}</p>` : `<p>${t}:</p>` + ut(e) : "";
+}
+function ut(t) {
+  return `<ul>${t.map((e) => `<li>${e}</li>`).join("")}</ul>`;
+}
+function g(t, e) {
+  return `<a href="${e}" target="_blank" rel="noreferrer noopener">${t}</a>`;
+}
+function mt(t) {
+  return t.map(E);
+}
+function E(t) {
+  try {
+    return g(t, new URL(t).toString());
+  } catch {
+    return t;
+  }
+}
+async function pt(t, e) {
+  const n = await m.assembleBase(t, e), r = m.resolveBaseUsingFirst(n);
   if (r !== null) {
     const o = await m.assembleComment(t, r);
-    ht(o);
+    ft(o);
   } else
     throw Error("Comment could not be auto-resolved");
 }
-function ht(t) {
-  ut(O(t), bt(t));
+function ft(t) {
+  X(nt(t), ht(t));
 }
-function bt(t) {
+function ht(t) {
   if (!t.ticket)
     return;
   const e = document.createElement("span");
   return e.textContent = "Ticket: ", e.appendChild(s.links.external(t.ticket)), e;
 }
-pt();
+function bt() {
+  const t = document.querySelector(".page-content-header");
+  t && t.appendChild(_(yt));
+}
+async function yt() {
+  const t = L.projects.ref(), e = L.commits.sha();
+  await pt(t, e);
+}
+bt();
 //# sourceMappingURL=daktela-gitlab.js.map
