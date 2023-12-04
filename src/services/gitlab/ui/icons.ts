@@ -10,7 +10,7 @@ const icons = {
 	},
 	spinner(): HTMLSpanElement {
 		const spinner = document.createElement('span');
-		spinner.classList.add('gl-spinner', 'gl-spinner-dark', 'gl-spinner-sm');
+		spinner.classList.add('gl-spinner', 'gl-spinner-dark', 'gl-spinner-sm', 'rounded-circle');
 
 		return spinner;
 	},

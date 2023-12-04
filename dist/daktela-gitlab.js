@@ -1,4 +1,4 @@
-const y = {
+const f = {
   projects: {
     ref() {
       const t = location.pathname.match(/^\/?(.*)\/-\//);
@@ -15,7 +15,7 @@ const y = {
       return t[1];
     }
   }
-}, M = "/api/v4", c = {
+}, _ = "/api/v4", i = {
   commits: {
     async findBySHA(t, e) {
       return m(`projects/${d(t)}/repository/commits/${e}`);
@@ -40,20 +40,20 @@ function d(t) {
   return encodeURIComponent(t);
 }
 async function m(t, e = {}) {
-  const n = new URL(`${M}/${t}`, location.origin);
-  return Object.entries(e).forEach(([o, i]) => n.searchParams.append(o, i)), await (await fetch(n)).json();
+  const n = new URL(`${_}/${t}`, location.origin);
+  return Object.entries(e).forEach(([o, s]) => n.searchParams.append(o, s)), await (await fetch(n)).json();
 }
-const E = {
+const x = {
   async findRefs(t, e) {
-    const n = await _(t, e);
+    const n = await H(t, e);
     return Promise.all(
       n.map((r) => this.findRef(t, r))
     );
   },
   async findRef(t, e) {
     const [n, r] = await Promise.all([
-      c.commits.findBySHA(t, e),
-      c.commits.refs(t, e, "branch")
+      i.commits.findBySHA(t, e),
+      i.commits.refs(t, e, "branch")
     ]);
     return { commit: n, branches: r };
   },
@@ -63,21 +63,21 @@ const E = {
     );
   },
   async deRef(t, e) {
-    const n = await c.branches.findByName(t, e.branch.name);
+    const n = await i.branches.findByName(t, e.branch.name);
     return { commit: e.commit, branch: n };
   }
 };
-async function _(t, e) {
-  const n = await c.commits.comments(t, e);
-  return H(n);
+async function H(t, e) {
+  const n = await i.commits.comments(t, e);
+  return N(n);
 }
-function H(t) {
+function N(t) {
   return t.reduce((e, n) => {
     const r = n.note.match(/mentioned\s+in\s+commit\s+(\w+)/i);
     return r !== null && e.push(r[1]), e;
   }, []);
 }
-const N = {
+const O = {
   message(t) {
     const e = { title: "", body: "", ticket: void 0, extra: {} }, n = t.message.split(`
 `).map((r) => r.trim());
@@ -93,26 +93,26 @@ function U(t) {
   return e.replace(/\s*#\s*\d+\s*$/, "");
 }
 function D(t, e) {
-  return F(e) || O(t, e) || I(t, e) || Y(t, e) || G(t, e);
+  return F(e) || I(t, e) || Y(t, e) || G(t, e) || V(t, e);
 }
 function g(t) {
-  return B(t, /^\s*$/);
+  return j(t, /^\s*$/);
 }
 function F(t) {
-  return B(t, /\(.*cherry.*picked.*\)/i);
+  return j(t, /\(.*cherry.*picked.*\)/i);
 }
-function B(t, e) {
+function j(t, e) {
   let n = !1;
   for (; t.length && t[0].match(e); )
     t.shift(), n = !0;
   return n;
 }
-function O(t, e) {
+function I(t, e) {
   let n = !1;
   return e.length && e[0].match(/^\s*$/) && (t.body += `
 `, n = !0, g(e)), n;
 }
-function I(t, e) {
+function Y(t, e) {
   if (e.length) {
     const n = e[0].match(/ticket\s*:\s*(http.*)/i);
     if (!n)
@@ -121,7 +121,7 @@ function I(t, e) {
   }
   return !0;
 }
-function Y(t, e) {
+function G(t, e) {
   if (e.length) {
     const n = e[0].match(/^([^:]+):\s*(http.*)/i);
     if (!n)
@@ -131,29 +131,29 @@ function Y(t, e) {
   }
   return !0;
 }
-function G(t, e) {
+function V(t, e) {
   const n = e.shift();
   return n !== void 0 && (t.body += `${n}
 `), n !== void 0;
 }
-const h = {
+const b = {
   async assembleBase(t, e) {
-    const n = await c.commits.findBySHA(t, e), [
+    const n = await i.commits.findBySHA(t, e), [
       r,
       o,
-      i
+      s
     ] = await Promise.all([
-      c.commits.refs(t, n.id, "all"),
-      E.findRefs(t, n.id),
-      c.commits.mergeRequests(t, n.id)
+      i.commits.refs(t, n.id, "all"),
+      x.findRefs(t, n.id),
+      i.commits.mergeRequests(t, n.id)
     ]);
-    return { commit: n, branches: r, cherryPicks: o, mergeRequests: i };
+    return { commit: n, branches: r, cherryPicks: o, mergeRequests: s };
   },
   async assembleComment(t, e) {
     const [n, r] = await Promise.all([
-      c.branches.findByName(t, e.branch.name),
-      E.deRefAll(t, e.cherryPicks)
-    ]), o = N.message(e.commit);
+      i.branches.findByName(t, e.branch.name),
+      x.deRefAll(t, e.cherryPicks)
+    ]), o = O.message(e.commit);
     return {
       commit: e.commit,
       branch: n,
@@ -186,14 +186,14 @@ const h = {
   },
   spinner() {
     const t = document.createElement("span");
-    return t.classList.add("gl-spinner", "gl-spinner-dark", "gl-spinner-sm"), t;
+    return t.classList.add("gl-spinner", "gl-spinner-dark", "gl-spinner-sm", "rounded-circle"), t;
   },
   checkCircle() {
-    const t = x("/assets/icons-7f1680a3670112fe4c8ef57b9dfb93f0f61b43a2a479d7abd6c83bcb724b9201.svg#status_success");
+    const t = B("/assets/icons-7f1680a3670112fe4c8ef57b9dfb93f0f61b43a2a479d7abd6c83bcb724b9201.svg#status_success");
     return t.classList.add("ci-status-icon-success"), t;
   },
   crossCircle() {
-    const t = x("/assets/icons-7f1680a3670112fe4c8ef57b9dfb93f0f61b43a2a479d7abd6c83bcb724b9201.svg#status_failed");
+    const t = B("/assets/icons-7f1680a3670112fe4c8ef57b9dfb93f0f61b43a2a479d7abd6c83bcb724b9201.svg#status_failed");
     return t.classList.add("ci-status-icon-failed"), t;
   },
   close() {
@@ -205,7 +205,7 @@ const h = {
     return t.classList.add("gl-icon"), t;
   }
 };
-function x(t) {
+function B(t) {
   const e = document.createElement("span");
   return e.appendChild(C(t)), e;
 }
@@ -215,7 +215,7 @@ function C(t) {
   const n = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   return n.classList.add("s16"), n.appendChild(e), n;
 }
-const b = {
+const y = {
   0: "0",
   1: "1",
   2: "2",
@@ -227,46 +227,46 @@ const b = {
   8: "8"
 }, p = {
   l(t) {
-    return `gl-ml-${b[t]}`;
+    return `gl-ml-${y[t]}`;
   },
   r(t) {
-    return `gl-mr-${b[t]}`;
+    return `gl-mr-${y[t]}`;
   },
   b(t) {
-    return `gl-mb-${b[t]}`;
+    return `gl-mb-${y[t]}`;
   }
-}, S = {
+}, R = {
   attach(t, e, n = "top") {
     t.dataset.toggle = "tooltip", t.dataset.title = e, t.dataset.placement = n, t.dataset.container = "body";
   }
-}, V = {
+}, W = {
   default: "btn-default"
-}, f = {
+}, h = {
   default(t = "") {
     return this.make(t, "default");
   },
   make(t = "", e = "default") {
     const n = document.createElement("button");
-    return n.textContent = t, n.classList.add("btn", "gl-button", V[e]), n;
+    return n.textContent = t, n.classList.add("btn", "gl-button", W[e]), n;
   },
   copy(t) {
     const e = document.createElement("button");
-    return e.classList.add("btn", "btn-clipboard", "gl-button", "btn-default-tertiary", "btn-icon", "btn-sm"), e.dataset.clipboardText = t, S.attach(e, "Copy"), e.appendChild(u.clipboard()), e;
+    return e.classList.add("btn", "btn-clipboard", "gl-button", "btn-default-tertiary", "btn-icon", "btn-sm"), e.dataset.clipboardText = t, R.attach(e, "Copy"), e.appendChild(u.clipboard()), e;
   },
   asyncButton(t, e, n) {
-    const o = { icon: t, title: e, disabled: !1 }, i = u.spinner();
-    i.classList.add(p.r(3));
-    const A = { icon: i, title: "Loading...", disabled: !0 }, L = u.checkCircle();
-    L.classList.add(p.r(3));
-    const P = { icon: L, title: "Success", disabled: !0 }, v = u.crossCircle();
+    const o = { icon: t, title: e, disabled: !1 }, s = u.spinner();
+    s.classList.add(p.r(3));
+    const T = { icon: s, title: "Loading...", disabled: !0 }, k = u.checkCircle();
+    k.classList.add(p.r(3));
+    const P = { icon: k, title: "Success", disabled: !0 }, v = u.crossCircle();
     v.classList.add(p.r(3));
-    const T = { icon: v, title: "Error", disabled: !0 }, a = f.default();
+    const q = { icon: v, title: "Error", disabled: !0 }, a = h.default();
     return l(a, o), a.addEventListener("click", async () => {
-      l(a, A);
+      l(a, T);
       try {
         await n(), l(a, P), setTimeout(() => l(a, o), 1500);
-      } catch (q) {
-        throw l(a, T), setTimeout(() => l(a, o), 1500), q;
+      } catch (M) {
+        throw l(a, q), setTimeout(() => l(a, o), 1500), M;
       }
     }), a;
   }
@@ -274,7 +274,7 @@ const b = {
 function l(t, e) {
   t.innerHTML = "", t.appendChild(e.icon), t.insertAdjacentText("beforeend", e.title), t.disabled = e.disabled;
 }
-const W = {
+const z = {
   make() {
     const t = {
       title: "",
@@ -293,16 +293,16 @@ const W = {
         return t.body.push(n), this;
       },
       addButton(n, r = "default") {
-        return t.buttons.push(f.make(n, r)), this;
+        return t.buttons.push(h.make(n, r)), this;
       },
       addCloseButton(n = "Close") {
-        const r = f.default(n);
+        const r = h.default(n);
         return r.dataset.dismiss = "modal", t.buttons.push(r), this;
       },
       build() {
         return {
           open() {
-            e = z(t), $(e).on("hidden.bs.modal", (n) => n.target.remove()), document.body.appendChild(e), $(e).modal("show");
+            e = J(t), $(e).on("hidden.bs.modal", (n) => n.target.remove()), document.body.appendChild(e), $(e).modal("show");
           },
           close() {
             e !== void 0 && $(e).modal("hide");
@@ -312,15 +312,15 @@ const W = {
     };
   }
 };
-function z(t) {
+function J(t) {
   const e = document.createElement("div");
-  e.classList.add("modal-content"), e.appendChild(J(t)), e.appendChild(K(t)), e.appendChild(Q(t));
+  e.classList.add("modal-content"), e.appendChild(K(t)), e.appendChild(Q(t)), e.appendChild(X(t));
   const n = document.createElement("div");
   n.classList.add("modal-dialog"), n.appendChild(e);
   const r = document.createElement("div");
   return r.classList.add("modal", "fade", "gl-modal"), r.appendChild(n), r;
 }
-function J(t) {
+function K(t) {
   const e = document.createElement("h4");
   e.classList.add("modal-title"), e.textContent = t.title;
   const n = document.createElement("button");
@@ -328,51 +328,51 @@ function J(t) {
   const r = document.createElement("div");
   return r.classList.add("modal-header"), r.appendChild(e), r.appendChild(n), r;
 }
-function K(t) {
+function Q(t) {
   const e = document.createElement("div");
   return e.classList.add("modal-body"), t.body.forEach((n) => e.appendChild(n)), e;
 }
-function Q(t) {
+function X(t) {
   const e = document.createElement("div");
   return e.classList.add("modal-footer"), t.buttons.forEach((n) => e.appendChild(n)), e;
 }
-const X = {
+const Z = {
   textArea(t = "", e = !1) {
     const n = document.createElement("textarea");
     return n.classList.add("gl-form-input", "gl-form-textarea", "form-control"), n.value = t, n.readOnly = e, n;
   }
-}, Z = {
+}, tt = {
   justifyBetween(...t) {
     const e = document.createElement("div");
     return e.classList.add("gl-display-flex", "gl-justify-content-space-between"), t.forEach((n) => e.appendChild(n)), e;
   }
-}, tt = {
+}, et = {
   external(t, e = void 0) {
     const n = document.createElement("a");
     return n.href = t, n.textContent = e ?? t, n.target = "_blank", n.rel = "noreferrer noopener", n;
   }
-}, s = {
+}, c = {
   margins: p,
   icons: u,
-  tooltip: S,
-  containers: Z,
-  buttons: f,
-  links: tt,
-  inputs: X,
-  modals: W
+  tooltip: R,
+  containers: tt,
+  buttons: h,
+  links: et,
+  inputs: Z,
+  modals: z
 };
-function et(t, e = void 0) {
-  const n = s.containers.justifyBetween(
-    nt(e),
-    s.buttons.copy(t)
+function nt(t, e = void 0) {
+  const n = c.containers.justifyBetween(
+    rt(e),
+    c.buttons.copy(t)
   );
-  n.classList.add(s.margins.b(2)), s.modals.make().setTitle("Copy").appendBody(n).appendBody(s.inputs.textArea(t, !0)).addCloseButton().build().open();
+  n.classList.add(c.margins.b(2)), c.modals.make().setTitle("Copy").appendBody(n).appendBody(c.inputs.textArea(t, !0)).addCloseButton().build().open();
 }
-function nt(t) {
+function rt(t) {
   const e = document.createElement("div");
   return t !== void 0 && e.appendChild(t), e;
 }
-const rt = [
+const ot = [
   "Menlo",
   "'DejaVu Sans Mono'",
   "'Liberation Mono'",
@@ -382,8 +382,8 @@ const rt = [
   "'andale mono'",
   "'lucida console'",
   "monospace"
-].join(", "), ot = [
-  `font-family:${rt}`,
+].join(", "), st = [
+  `font-family:${ot}`,
   "font-size:0.8125rem",
   "margin-top:8px",
   "margin-bottom:8px",
@@ -393,79 +393,105 @@ const rt = [
   "border-style:none none none solid",
   "border-color:#444444"
 ].join(";");
-function st(t) {
-  return at(t) + ct(t) + ut(t) + mt(t) + pt(t);
+function ct(t) {
+  return at(t) + it(t) + mt(t) + pt(t) + ft(t);
 }
 function at(t) {
   return `<p><strong>${t.title}</strong></p>`;
 }
-function ct(t) {
-  return w("Commits", it([t].concat(t.cherryPicks)));
-}
 function it(t) {
-  return t.map((e) => `${dt(e.branch)} ${lt(e.commit)}`);
+  return w("Commits", dt([t].concat(t.cherryPicks)));
 }
 function dt(t) {
-  return k(t.name, t.web_url);
+  return t.map((e) => `${lt(e.branch)} ${ut(e.commit)}`);
 }
 function lt(t) {
-  return k(t.web_url, t.web_url);
+  return E(t.name, t.web_url);
 }
 function ut(t) {
-  return w("Merge requests", t.mergeRequests.map((e) => R(e.web_url)));
+  return E(t.web_url, t.web_url);
 }
 function mt(t) {
-  return Object.entries(t.extra).reduce((e, [n, r]) => e + w(n, ht(r), !0), "");
+  return w("Merge requests", t.mergeRequests.map((e) => A(e.web_url)));
 }
 function pt(t) {
-  return t.body === "" ? "" : `<p>Notes (copied from commit message):</p><pre style="${ot}">${t.body}</pre>`;
-}
-function w(t, e, n = !1) {
-  return e.length ? e.length === 1 && n ? `<p>${t}: ${e[0]}</p>` : `<p>${t}:</p>` + ft(e) : "";
+  return Object.entries(t.extra).reduce((e, [n, r]) => e + w(n, bt(r), !0), "");
 }
 function ft(t) {
-  return `<ul>${t.map((e) => `<li>${e}</li>`).join("")}</ul>`;
+  return t.body === "" ? "" : `<p>Notes (copied from commit message):</p><pre style="${st}">${t.body}</pre>`;
 }
-function k(t, e) {
-  return `<a href="${e}" target="_blank" rel="noreferrer noopener">${t}</a>`;
+function w(t, e, n = !1) {
+  return e.length ? e.length === 1 && n ? `<p>${t}: ${e[0]}</p>` : `<p>${t}:</p>` + ht(e) : "";
 }
 function ht(t) {
-  return t.map(R);
+  return `<ul>${t.map((e) => `<li>${e}</li>`).join("")}</ul>`;
 }
-function R(t) {
+function E(t, e) {
+  return `<a href="${e}" target="_blank" rel="noreferrer noopener">${t}</a>`;
+}
+function bt(t) {
+  return t.map(A);
+}
+function A(t) {
   try {
-    return k(t, new URL(t).toString());
+    return E(t, new URL(t).toString());
   } catch {
     return t;
   }
 }
-async function bt(t, e) {
-  const n = await h.assembleBase(t, e), r = h.resolveBaseUsingFirst(n);
+async function yt(t, e) {
+  const n = await b.assembleBase(t, e), r = b.resolveBaseUsingFirst(n);
   if (r !== null) {
-    const o = await h.assembleComment(t, r);
-    yt(o);
+    const o = await b.assembleComment(t, r);
+    gt(o);
   } else
     throw Error("Comment could not be auto-resolved");
 }
-function yt(t) {
-  et(st(t), gt(t));
-}
 function gt(t) {
+  nt(ct(t), Ct(t));
+}
+function Ct(t) {
   if (!t.ticket)
     return;
   const e = document.createElement("span");
-  return e.textContent = "Ticket: ", e.appendChild(s.links.external(t.ticket)), e;
-}
-function Ct() {
-  wt(), kt();
+  return e.textContent = "Ticket: ", e.appendChild(c.links.external(t.ticket)), e;
 }
 function wt() {
+  Et(), Lt(), kt();
+}
+function Et() {
+  try {
+    const t = document.querySelectorAll("#commits-list");
+    if (!t)
+      return;
+    const e = f.projects.ref();
+    S(e, t), t.forEach((n) => {
+      new MutationObserver((o) => {
+        o.filter((s) => s.type === "childList").forEach((s) => S(e, s.addedNodes));
+      }).observe(n, { subtree: !0, childList: !0 });
+    });
+  } catch (t) {
+    console.log(t);
+  }
+}
+function S(t, e) {
+  e.forEach((n) => {
+    n instanceof HTMLElement && n.querySelectorAll(".commit .commit-sha-group").forEach((r) => {
+      const o = r.querySelector("[data-clipboard-text]");
+      if (!o || !(o instanceof HTMLElement))
+        return;
+      const s = o.dataset.clipboardText ?? "";
+      console.log(s), r.appendChild(L(t, s));
+    });
+  });
+}
+function Lt() {
   try {
     const t = document.querySelector(".page-content-header");
     if (!t)
       return;
-    const e = y.projects.ref(), n = y.commits.sha(), r = j(e, n);
-    r.classList.add(s.margins.l(3)), t.appendChild(r);
+    const e = f.projects.ref(), n = f.commits.sha(), r = L(e, n);
+    r.classList.add(c.margins.l(3)), t.appendChild(r);
   } catch (t) {
     console.error(t);
   }
@@ -481,17 +507,17 @@ function kt() {
     const e = t.querySelector("[data-clipboard-text]");
     if (!e || !(e instanceof HTMLElement))
       return;
-    const n = y.projects.ref(), r = e.dataset.clipboardText ?? "";
-    t.appendChild(j(n, r));
+    const n = f.projects.ref(), r = e.dataset.clipboardText ?? "";
+    t.appendChild(L(n, r));
   } catch (t) {
     console.error(t);
   }
 }
-function j(t, e) {
-  const n = s.icons.daktela();
-  return n.classList.add(s.margins.r(3)), s.buttons.asyncButton(n, "Daktela comment", async () => {
-    await bt(t, e);
+function L(t, e) {
+  const n = c.icons.daktela();
+  return n.classList.add(c.margins.r(3)), c.buttons.asyncButton(n, "Daktela comment", async () => {
+    await yt(t, e);
   });
 }
-Ct();
+wt();
 //# sourceMappingURL=daktela-gitlab.js.map

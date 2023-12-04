@@ -4,8 +4,54 @@ import { ProjectRef, SHA } from '../../../../services/gitlab/types.ts';
 import UI from '../../../../services/gitlab/ui.ts';
 
 function inject(): void {
+	injectOnCommitIndexPage();
 	injectOnCommitDetailPage();
 	injectToProjectLastCommit()
+}
+
+function injectOnCommitIndexPage(): void {
+	try {
+		const lists = document.querySelectorAll('#commits-list');
+
+		if (!lists) {
+			return;
+		}
+
+		const ref = Current.projects.ref();
+		injectToCommitLists(ref, lists);
+
+		lists.forEach(list => {
+			const observer = new MutationObserver(records => {
+				records.filter(record => record.type === 'childList')
+					.forEach(record => injectToCommitLists(ref, record.addedNodes));
+			});
+
+			observer.observe(list, {subtree: true, childList: true});
+		});
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+function injectToCommitLists(ref: ProjectRef, containers: NodeList): void {
+	containers.forEach(container => {
+		if (!(container instanceof HTMLElement)) {
+			return;
+		}
+
+		container.querySelectorAll('.commit .commit-sha-group')
+			.forEach(group => {
+				const shaElement = group.querySelector('[data-clipboard-text]');
+
+				if (!shaElement || !(shaElement instanceof HTMLElement)) {
+					return;
+				}
+
+				const sha = shaElement.dataset.clipboardText ?? '';
+
+				group.appendChild(makeButton(ref, sha));
+			});
+	});
 }
 
 function injectOnCommitDetailPage(): void {
