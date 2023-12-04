@@ -72,7 +72,7 @@ const modals = {
 			},
 		};
 	},
-};
+} as const;
 
 function buildModal(config: Config): HTMLDivElement {
 	const content = document.createElement('div');

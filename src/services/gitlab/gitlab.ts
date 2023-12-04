@@ -22,7 +22,7 @@ const GitLab = {
 			return get(`projects/${e(project)}/repository/branches/${e(name)}`);
 		},
 	},
-};
+} as const;
 
 function e(value: string|number|boolean): string {
 	return encodeURIComponent(value);

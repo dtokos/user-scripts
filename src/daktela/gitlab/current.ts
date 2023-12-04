@@ -23,6 +23,6 @@ const Current = {
 			return matches[1];
 		},
 	},
-};
+} as const;
 
 export default Current;

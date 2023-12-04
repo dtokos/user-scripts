@@ -8,6 +8,6 @@ const links = {
 
 		return anchor;
 	},
-};
+} as const;
 
 export default links;

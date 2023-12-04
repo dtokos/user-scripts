@@ -38,7 +38,7 @@ const icons = {
 
 		return icon;
 	}
-};
+} as const;
 
 function wrappedSVGIcon(href: string): HTMLSpanElement {
 	const wrapper = document.createElement('span');

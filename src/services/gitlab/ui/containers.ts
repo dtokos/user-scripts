@@ -6,6 +6,6 @@ const containers = {
 
 		return container;
 	},
-};
+} as const;
 
 export default containers;

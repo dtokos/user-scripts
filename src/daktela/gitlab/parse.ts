@@ -19,7 +19,7 @@ const Parse = {
 
 		return message;
 	},
-};
+} as const;
 
 function parseTitle(lines: string[]): string {
 	const title = lines.shift();

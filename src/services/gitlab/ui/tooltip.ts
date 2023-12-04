@@ -14,6 +14,6 @@ const tooltip = {
 		element.dataset.placement = placement;
 		element.dataset.container = 'body';
 	},
-};
+} as const;
 
 export default tooltip;

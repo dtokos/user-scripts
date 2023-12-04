@@ -27,7 +27,7 @@ const CherryPicks = {
 		const branch = await GitLab.branches.findByName(project, cherryPick.branch.name);
 		return {commit: cherryPick.commit, branch};
 	},
-};
+} as const;
 
 async function findSHAsForCommit(project: ProjectRef, sha: SHA): Promise<SHA[]> {
 	const comments = await GitLab.commits.comments(project, sha);

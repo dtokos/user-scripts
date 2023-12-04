@@ -27,6 +27,6 @@ const buttons = {
 
 		return button;
 	},
-};
+} as const;
 
 export default buttons;

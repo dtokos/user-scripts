@@ -60,6 +60,6 @@ const Comments = {
 			mergeRequests: base.mergeRequests,
 		};
 	},
-};
+} as const;
 
 export default Comments;

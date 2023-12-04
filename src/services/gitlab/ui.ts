@@ -16,6 +16,6 @@ const UI = {
 	links,
 	inputs,
 	modals,
-};
+} as const;
 
 export default UI;

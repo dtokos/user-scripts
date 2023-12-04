@@ -7,6 +7,6 @@ const inputs = {
 
 		return textArea;
 	},
-};
+} as const;
 
 export default inputs;
