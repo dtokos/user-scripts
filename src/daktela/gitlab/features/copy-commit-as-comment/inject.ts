@@ -5,6 +5,7 @@ import UI from '../../../../services/gitlab/ui.ts';
 
 function inject(): void {
 	injectOnCommitDetailPage();
+	injectToProjectLastCommit()
 }
 
 function injectOnCommitDetailPage(): void {
@@ -22,6 +23,32 @@ function injectOnCommitDetailPage(): void {
 		button.classList.add(UI.margins.l(3));
 
 		header.appendChild(button);
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+function injectToProjectLastCommit(): void {
+	try {
+		const group = document.querySelector([
+			'.project-last-commit .js-commit-sha-group',
+			'.blob-commit-info .commit-sha-group',
+		].join(', '));
+
+		if (!group) {
+			return;
+		}
+
+		const shaElement = group.querySelector('[data-clipboard-text]');
+
+		if (!shaElement || !(shaElement instanceof HTMLElement)) {
+			return;
+		}
+
+		const ref = Current.projects.ref();
+		const sha = shaElement.dataset.clipboardText ?? '';
+
+		group.appendChild(makeButton(ref, sha));
 	} catch (error) {
 		console.error(error);
 	}
