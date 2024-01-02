@@ -256,13 +256,13 @@ const y = {
   asyncButton(t, e, n) {
     const o = { icon: t, title: e, disabled: !1 }, s = u.spinner();
     s.classList.add(p.r(3));
-    const T = { icon: s, title: "Loading...", disabled: !0 }, k = u.checkCircle();
+    const A = { icon: s, title: "Loading...", disabled: !0 }, k = u.checkCircle();
     k.classList.add(p.r(3));
     const P = { icon: k, title: "Success", disabled: !0 }, v = u.crossCircle();
     v.classList.add(p.r(3));
     const q = { icon: v, title: "Error", disabled: !0 }, a = h.default();
     return l(a, o), a.addEventListener("click", async () => {
-      l(a, T);
+      l(a, A);
       try {
         await n(), l(a, P), setTimeout(() => l(a, o), 1500);
       } catch (M) {
@@ -406,13 +406,13 @@ function dt(t) {
   return t.map((e) => `${lt(e.branch)} ${ut(e.commit)}`);
 }
 function lt(t) {
-  return E(t.name, t.web_url);
+  return L(t.name, t.web_url);
 }
 function ut(t) {
-  return E(t.web_url, t.web_url);
+  return L(t.web_url, t.web_url);
 }
 function mt(t) {
-  return w("Merge requests", t.mergeRequests.map((e) => A(e.web_url)));
+  return w("Merge requests", t.mergeRequests.map((e) => T(e.web_url)));
 }
 function pt(t) {
   return Object.entries(t.extra).reduce((e, [n, r]) => e + w(n, bt(r), !0), "");
@@ -426,15 +426,15 @@ function w(t, e, n = !1) {
 function ht(t) {
   return `<ul>${t.map((e) => `<li>${e}</li>`).join("")}</ul>`;
 }
-function E(t, e) {
+function L(t, e) {
   return `<a href="${e}" target="_blank" rel="noreferrer noopener">${t}</a>`;
 }
 function bt(t) {
-  return t.map(A);
+  return t.map(T);
 }
-function A(t) {
+function T(t) {
   try {
-    return E(t, new URL(t).toString());
+    return L(t, new URL(t).toString());
   } catch {
     return t;
   }
@@ -448,7 +448,8 @@ async function yt(t, e) {
     throw Error("Comment could not be auto-resolved");
 }
 function gt(t) {
-  nt(ct(t), Ct(t));
+  const e = ct(t);
+  console.log(e), nt(e, Ct(t));
 }
 function Ct(t) {
   if (!t.ticket)
@@ -457,9 +458,9 @@ function Ct(t) {
   return e.textContent = "Ticket: ", e.appendChild(c.links.external(t.ticket)), e;
 }
 function wt() {
-  Et(), Lt(), kt();
+  Lt(), Et(), kt();
 }
-function Et() {
+function Lt() {
   try {
     const t = document.querySelectorAll("#commits-list");
     if (!t)
@@ -481,16 +482,16 @@ function S(t, e) {
       if (!o || !(o instanceof HTMLElement))
         return;
       const s = o.dataset.clipboardText ?? "";
-      console.log(s), r.appendChild(L(t, s));
+      r.appendChild(E(t, s));
     });
   });
 }
-function Lt() {
+function Et() {
   try {
     const t = document.querySelector(".page-content-header");
     if (!t)
       return;
-    const e = f.projects.ref(), n = f.commits.sha(), r = L(e, n);
+    const e = f.projects.ref(), n = f.commits.sha(), r = E(e, n);
     r.classList.add(c.margins.l(3)), t.appendChild(r);
   } catch (t) {
     console.error(t);
@@ -508,12 +509,12 @@ function kt() {
     if (!e || !(e instanceof HTMLElement))
       return;
     const n = f.projects.ref(), r = e.dataset.clipboardText ?? "";
-    t.appendChild(L(n, r));
+    t.appendChild(E(n, r));
   } catch (t) {
     console.error(t);
   }
 }
-function L(t, e) {
+function E(t, e) {
   const n = c.icons.daktela();
   return n.classList.add(c.margins.r(3)), c.buttons.asyncButton(n, "Daktela comment", async () => {
     await yt(t, e);

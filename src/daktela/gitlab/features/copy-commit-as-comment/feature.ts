@@ -20,7 +20,9 @@ async function copyCommitAsComment(project: ProjectRef, commit: SHA): Promise<vo
 }
 
 function openCopy(comment: Comment): void {
-	openCopyModal(render(comment), ticketDescription(comment));
+	const rendered = render(comment);
+	console.log(rendered);
+	openCopyModal(rendered, ticketDescription(comment));
 }
 
 function ticketDescription(comment: Comment): HTMLSpanElement|undefined {
