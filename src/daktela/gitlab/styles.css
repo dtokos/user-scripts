@@ -1,0 +1,4 @@
+dialog.gl-dialog-modal::backdrop {
+    background-color: #1f1e24;
+    opacity: 0.24;
+}

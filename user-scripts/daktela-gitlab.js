@@ -5,15 +5,19 @@
 // ==/UserScript==
 
 (function() {
-	const script = document.createElement('script');
-	script.type = 'text/javascript';
-	script.src = 'https://dtokos.github.io/user-scripts/dist/daktela-gitlab.js';
-
 	const head = document.querySelector('head');
 
 	if (!head) {
 		return;
 	}
 
+	const script = document.createElement('script');
+	script.type = 'text/javascript';
+	script.src = 'https://dtokos.github.io/user-scripts/dist/daktela-gitlab.js';
 	head.appendChild(script);
+
+	const style = document.createElement('link');
+	style.rel = 'stylesheet';
+	style.href = 'https://dtokos.github.io/user-scripts/dist/daktela-gitlab.css';
+	head.appendChild(style);
 })();

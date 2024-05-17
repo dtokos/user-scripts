@@ -15,41 +15,41 @@ const icons = {
 		return spinner;
 	},
 	checkCircle(): HTMLSpanElement {
-		const icon = wrappedSVGIcon('/assets/icons-7f1680a3670112fe4c8ef57b9dfb93f0f61b43a2a479d7abd6c83bcb724b9201.svg#status_success');
+		const icon = wrappedSVGIcon('status_success');
 		icon.classList.add('ci-status-icon-success');
 
 		return icon;
 	},
 	crossCircle(): HTMLSpanElement {
-		const icon = wrappedSVGIcon('/assets/icons-7f1680a3670112fe4c8ef57b9dfb93f0f61b43a2a479d7abd6c83bcb724b9201.svg#status_failed');
+		const icon = wrappedSVGIcon('status_failed');
 		icon.classList.add('ci-status-icon-failed');
 
 		return icon;
 	},
 	close(): SVGSVGElement {
-		const icon = svgIcon('/assets/icons-7f1680a3670112fe4c8ef57b9dfb93f0f61b43a2a479d7abd6c83bcb724b9201.svg#close');
+		const icon = svgIcon('close');
 		icon.classList.add('gl-button-icon');
 
 		return icon;
 	},
 	clipboard(): SVGSVGElement {
-		const icon = svgIcon('/assets/icons-7f1680a3670112fe4c8ef57b9dfb93f0f61b43a2a479d7abd6c83bcb724b9201.svg#copy-to-clipboard');
+		const icon = svgIcon('copy-to-clipboard');
 		icon.classList.add('gl-icon');
 
 		return icon;
 	}
 } as const;
 
-function wrappedSVGIcon(href: string): HTMLSpanElement {
+function wrappedSVGIcon(iconName: string): HTMLSpanElement {
 	const wrapper = document.createElement('span');
-	wrapper.appendChild(svgIcon(href));
+	wrapper.appendChild(svgIcon(iconName));
 
 	return wrapper;
 }
 
-function svgIcon(href: string): SVGSVGElement {
+function svgIcon(iconName: string): SVGSVGElement {
 	const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-	use.setAttribute('href', href);
+	use.setAttribute('href', `/assets/icons-33d285b77c0f9173f577e26a550fb6463b9913e368ebfcdbb54022aff27051db.svg#${iconName}`);
 
 	const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 	svg.classList.add('s16');

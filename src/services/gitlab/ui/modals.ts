@@ -28,7 +28,7 @@ const modals = {
 			body: [],
 			buttons: [],
 		};
-		let element: HTMLDivElement|undefined = undefined;
+		let element: HTMLDialogElement|undefined = undefined;
 
 		return {
 			setTitle(title: string): ModalBuilder {
@@ -57,16 +57,20 @@ const modals = {
 			build(): Modal {
 				return {
 					open(): void {
-						element = buildModal(config);
-						$(element).on('hidden.bs.modal', event => event.target.remove());
-						document.body.appendChild(element);
+						if (element === undefined) {
+							element = buildDialog(config);
+							element.addEventListener('close', () => {
+								element?.remove();
+								element = undefined;
+							});
 
-						$(element).modal('show');
+							document.body.appendChild(element);
+						}
+
+						element.showModal();
 					},
 					close(): void {
-						if (element !== undefined) {
-							$(element).modal('hide');
-						}
+						element?.close();
 					},
 				};
 			},
@@ -74,22 +78,28 @@ const modals = {
 	},
 } as const;
 
-function buildModal(config: Config): HTMLDivElement {
+function buildDialog(config: Config): HTMLDialogElement {
 	const content = document.createElement('div');
 	content.classList.add('modal-content');
 	content.appendChild(buildHeader(config));
 	content.appendChild(buildBody(config));
 	content.appendChild(buildFooter(config));
 
-	const dialog = document.createElement('div');
-	dialog.classList.add('modal-dialog');
+	const dialog = document.createElement('dialog');
+	dialog.classList.add('gl-dialog-modal');
 	dialog.appendChild(content);
 
-	const modal = document.createElement('div');
-	modal.classList.add('modal', 'fade', 'gl-modal');
-	modal.appendChild(dialog);
+	dialog.addEventListener('click', event => {
+		if (!(event.target instanceof Element)) {
+			return;
+		}
 
-	return modal;
+		if (event.target === dialog || dismissClicked(dialog, event.target)) {
+			dialog.close();
+		}
+	});
+
+	return dialog;
 }
 
 function buildHeader(config: Config): HTMLDivElement {
@@ -124,6 +134,11 @@ function buildFooter(config: Config): HTMLDivElement {
 	config.buttons.forEach(button => footer.appendChild(button));
 
 	return footer;
+}
+
+function dismissClicked(dialog: HTMLDialogElement, target: Element): boolean {
+	const dismiss = target.closest('[data-dismiss="modal"], dialog');
+	return dismiss !== null && dismiss !== dialog;
 }
 
 export default modals;
