@@ -14,7 +14,7 @@
   "devDependencies": {
     "@types/bootstrap": "^4.5.0",
     "@types/jquery": "^3.5.29",
-    "typescript": "^5.2.2",
-    "vite": "^5.0.0"
+    "typescript": "^5.4.5",
+    "vite": "^5.2.11"
   }
 }
