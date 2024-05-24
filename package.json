@@ -18,7 +18,7 @@
     "@types/bootstrap": "^4.5.0",
     "@types/jquery": "^3.5.29",
     "@types/node": "^20.12.12",
-    "svelte": "^5.0.0-next.136",
+    "svelte": "^5.0.0-next.141",
     "svelte-check": "^3.7.1",
     "typescript": "^5.4.5",
     "vite": "^5.2.11"
