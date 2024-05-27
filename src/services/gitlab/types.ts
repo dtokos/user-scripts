@@ -1,4 +1,4 @@
-export type ProjectRef = number|string;
+export type ProjectRef = number | string;
 
 export type SHA = string;
 

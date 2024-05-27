@@ -14,7 +14,13 @@ function inject(): void {
 
 	container.appendChild(svelteContainer);
 
-	mount(App, { target: svelteContainer });
+	mount(App, {
+		target: svelteContainer,
+		props: {
+			projectRef: 'v5/pbx',
+			sha: 'fc9ca5a1fa6ab728f7ad6615ad02c6df36332896',
+		},
+	});
 }
 
 export default inject;
