@@ -1,27 +1,75 @@
-<script lang="ts">
-    import Modal from '@gitlab/ui/modal';
+<script lang="ts" context="module">
     import type { ProjectRef, SHA } from '@gitlab/types.ts';
 
-    type Props = {
-        projectRef: ProjectRef
+    export type Args = {
+        projectRef: ProjectRef,
         sha: SHA,
-        isOpen: boolean,
+    };
+</script>
+
+<script lang="ts">
+    import Modal from '@gitlab/ui/modal';
+    import Loading from './Steps/Loading.svelte';
+    import Result from './Steps/Result.svelte';
+    import Comments from '../../comments.ts';
+    import type { Comment } from '../../types.ts';
+
+    type Props = {
+        args?: Args,
     };
 
-    let { projectRef, sha, isOpen = $bindable(false) }: Props = $props();
+    type Step = (
+        | { type: 'closed' }
+        | { type: 'loading', project: ProjectRef, commit: SHA }
+        | { type: 'result', comment: Comment }
+    );
+
+    let { args = $bindable() }: Props = $props();
+    let step: Step = $state({ type: 'closed' });
+
+    async function start(project: ProjectRef, commit: SHA): Promise<void> {
+        setLoadingState(project, commit);
+
+        const base = await Comments.assembleBase(project, commit);
+        // const autoResolvedBase = Comments.tryAutoResolveBase(base);
+        const autoResolvedBase = Comments.resolveBaseUsingFirst(base);
+
+        if (autoResolvedBase !== null) {
+            const comment = await Comments.assembleComment(project, autoResolvedBase);
+            setResultState(comment);
+        } else {
+            // TODO: Implement modal
+            console.error('Comment could not be auto-resolved');
+        }
+    }
+
+    function setLoadingState(project: ProjectRef, commit: SHA): void {
+        step = { type: 'loading', project, commit };
+    }
+
+    function setResultState(comment: Comment): void {
+        step = { type: 'result', comment };
+    }
 
     $effect(() => {
-        if (isOpen) {
-            console.log('modal was opened');
+        if (args !== undefined) {
+            start(args.projectRef, args.sha);
         }
     });
 
-    const onOpen = (open: boolean) => {
-        console.log('on open change', open);
+    function onOpenChange(newIsOpen: boolean): void {
+        if (!newIsOpen) {
+            closeModal();
+        }
+    }
+
+    function closeModal(): void {
+        step = { type: 'closed' };
+        args = undefined;
     }
 </script>
 
-<Modal.Root bind:open={isOpen} onOpenChange={onOpen}>
+<Modal.Root open={step.type !== 'closed'} onOpenChange={onOpenChange}>
     <Modal.Portal>
         <Modal.Overlay />
 
@@ -31,7 +79,11 @@
                 <Modal.CloseIcon />
             </Modal.Header>
             <Modal.Body>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum reiciendis sit voluptas! Consequuntur debitis dolore dolorem dolores esse eveniet facilis fugit, illum laboriosam nihil nisi numquam, odit, quis similique voluptatibus!
+                {#if step.type === 'loading'}
+                    <Loading />
+                {:else if step.type === 'result'}
+                    <Result comment={step.comment} />
+                {/if}
             </Modal.Body>
             <Modal.Footer>
                 footer

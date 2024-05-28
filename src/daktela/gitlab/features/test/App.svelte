@@ -4,6 +4,7 @@
     import Icon from '@gitlab/ui/Icon.svelte';
     import type { ProjectRef, SHA } from '@gitlab/types.ts';
     import GenerateTicketCommentModal from '../generate-ticket-comment/GenerateTicketCommentModal.svelte';
+    import type { Args } from '../generate-ticket-comment/GenerateTicketCommentModal.svelte';
 
     type Props = {
         projectRef?: ProjectRef
@@ -12,10 +13,10 @@
 
     const { projectRef, sha }: Props = $props();
 
-    let isGenerateTicketCommentModalOpen = $state(false);
+    let generateTicketCommentModalArgs: Args | undefined = $state(undefined);
 
-    function openGenerateTicketCommentModal(): void {
-        isGenerateTicketCommentModalOpen = true;
+    function openGenerateTicketCommentModal(p: ProjectRef, s: SHA): void {
+        generateTicketCommentModalArgs = { projectRef: p, sha: s };
     }
 </script>
 
@@ -26,7 +27,7 @@
 
     <Dropdown.Content>
         {#if projectRef && sha}
-            <Dropdown.Item onclick={openGenerateTicketCommentModal}>
+            <Dropdown.Item onclick={() => openGenerateTicketCommentModal(projectRef, sha)}>
                 <Icon name="comment-lines" class="gl-mr-2" />
                 Generate ticket comment
             </Dropdown.Item>
@@ -35,5 +36,5 @@
 </Dropdown.Root>
 
 {#if projectRef && sha}
-    <GenerateTicketCommentModal bind:isOpen={isGenerateTicketCommentModalOpen} {projectRef} {sha} />
+    <GenerateTicketCommentModal bind:args={generateTicketCommentModalArgs} />
 {/if}

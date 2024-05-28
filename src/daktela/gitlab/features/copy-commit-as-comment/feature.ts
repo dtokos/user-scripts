@@ -1,4 +1,4 @@
-import { ProjectRef, SHA } from '../../../../services/gitlab/types.ts';
+import { ProjectRef, SHA } from '@gitlab/types.ts';
 import Comments from '../../comments.ts';
 import { Comment } from '../../types.ts';
 import openCopyModal from '../../copy-modal.ts';
