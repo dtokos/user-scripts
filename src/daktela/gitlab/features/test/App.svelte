@@ -1,9 +1,9 @@
 <script lang="ts">
     import Dropdown from '@gitlab/ui/dropdown';
-    import Modal from '@gitlab/ui/modal';
     import DaktelaIcon from '@gitlab/ui/DaktelaIcon.svelte';
     import Icon from '@gitlab/ui/Icon.svelte';
     import type { ProjectRef, SHA } from '@gitlab/types.ts';
+    import GenerateTicketCommentModal from '../generate-ticket-comment/GenerateTicketCommentModal.svelte';
 
     type Props = {
         projectRef?: ProjectRef
@@ -12,10 +12,10 @@
 
     const { projectRef, sha }: Props = $props();
 
-    let generateTicketModalOpen: boolean = $state(false);
+    let isGenerateTicketCommentModalOpen = $state(false);
 
-    function openGenerateTicketCommentModal() {
-        generateTicketModalOpen = true;
+    function openGenerateTicketCommentModal(): void {
+        isGenerateTicketCommentModalOpen = true;
     }
 </script>
 
@@ -35,16 +35,5 @@
 </Dropdown.Root>
 
 {#if projectRef && sha}
-    <Modal.Root bind:open={generateTicketModalOpen}>
-        <Modal.Portal>
-            <Modal.Overlay />
-
-            <Modal.Content>
-                <Modal.Header>
-                    <Modal.Title>Generate ticket comment</Modal.Title>
-                    <Modal.CloseIcon />
-                </Modal.Header>
-            </Modal.Content>
-        </Modal.Portal>
-    </Modal.Root>
+    <GenerateTicketCommentModal bind:isOpen={isGenerateTicketCommentModalOpen} {projectRef} {sha} />
 {/if}
