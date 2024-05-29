@@ -73,7 +73,7 @@
     <Modal.Portal>
         <Modal.Overlay />
 
-        <Modal.Content>
+        <Modal.Content size="sm">
             <Modal.Header>
                 <Modal.Title>Generate ticket comment</Modal.Title>
                 <Modal.CloseIcon />
@@ -86,7 +86,7 @@
                 {/if}
             </Modal.Body>
             <Modal.Footer>
-                footer
+                <Modal.Close />
             </Modal.Footer>
         </Modal.Content>
     </Modal.Portal>

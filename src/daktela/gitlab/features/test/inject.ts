@@ -18,7 +18,7 @@ function inject(): void {
 		target: svelteContainer,
 		props: {
 			projectRef: 'v5/pbx',
-			sha: 'fc9ca5a1fa6ab728f7ad6615ad02c6df36332896',
+			sha: '10987e3c6f5d6fed0fd12379327859c930999e6e',
 		},
 	});
 }

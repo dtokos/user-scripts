@@ -3,6 +3,7 @@
         'chevron-down': 'chevron-down',
         'comment-lines': 'comment-lines',
         'close': 'close',
+        'copy-to-clipboard': 'copy-to-clipboard',
     } as const;
 
     type Name = keyof typeof map;
