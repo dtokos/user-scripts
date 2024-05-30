@@ -7,11 +7,12 @@
     import type { Args } from '../generate-ticket-comment/GenerateTicketCommentModal.svelte';
 
     type Props = {
+        class?: string,
         projectRef?: ProjectRef
         sha?: SHA,
     };
 
-    const { projectRef, sha }: Props = $props();
+    const { projectRef, sha, class: className = '' }: Props = $props();
 
     let generateTicketCommentModalArgs: Args | undefined = $state(undefined);
 
@@ -21,8 +22,8 @@
 </script>
 
 <Dropdown.Root>
-    <Dropdown.Trigger>
-        <DaktelaIcon class="gl-icon s16" style="scale: 1.5" />
+    <Dropdown.Trigger class={className}>
+        <DaktelaIcon class="gl-icon s14" style="scale: 1.5" />
     </Dropdown.Trigger>
 
     <Dropdown.Content>

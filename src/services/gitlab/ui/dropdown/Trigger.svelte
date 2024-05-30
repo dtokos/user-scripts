@@ -5,12 +5,13 @@
 
     type Props = {
         children: Snippet,
+        class?: string
     };
 
-    const { children }: Props = $props();
+    const { children, class: className = '' }: Props = $props();
 </script>
 
-<div class="gl-disclosure-dropdown gl-new-dropdown">
+<div class="gl-disclosure-dropdown gl-new-dropdown {className}">
     <DropdownMenu.Trigger class="btn btn-default btn-md gl-button gl-new-dropdown-toggle">
         <span class="gl-button-text gl-w-full">
             <span class="gl-new-dropdown-button-text">

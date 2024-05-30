@@ -1,9 +1,9 @@
-import { ProjectRef, SHA } from '../../services/gitlab/types.ts';
+import { ProjectRef, SHA } from '@gitlab/types.ts';
 
 const Current = {
 	projects: {
 		ref(): ProjectRef {
-			const matches = location.pathname.match(/^\/?(.*)\/-\//);
+			const matches = location.pathname.match(/^\/?(.*?)(?:\/-\/|$)/);
 
 			if (!matches) {
 				throw Error(`Could not parse project ref: ${location.pathname}`);
