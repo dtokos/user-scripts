@@ -1,6 +1,8 @@
 import App from './App.svelte';
 import { mount } from 'svelte';
 import Current from '../../current.ts';
+import Counter from './Counter.svelte';
+import useCounter from './useCounter.svelte.ts';
 
 function injectOnCommitDetailPage(): void {
 	try {
@@ -80,9 +82,30 @@ function injectTest(): void {
 	});
 }
 
+function injectCounterTest(): void {
+	const container = document.querySelector('.home-panel-description-markdown.read-more-container');
+
+	if (!container) {
+		return;
+	}
+
+	const svelteContainer = document.createElement('div');
+	svelteContainer.style.border = '1px solid #f00';
+	svelteContainer.style.paddingBlock = '1rem';
+
+	container.appendChild(svelteContainer);
+
+	mount(Counter, {
+		target: svelteContainer,
+		props: {
+			counter: useCounter(),
+		},
+	});
+}
 
 function inject(): void {
-	injectTest();
+	// injectTest();
+	injectCounterTest();
 	injectOnCommitDetailPage();
 	injectToProjectLastCommit();
 }
