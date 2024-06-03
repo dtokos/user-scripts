@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="ts" context="module">
     const map = {
         'chevron-down': 'chevron-down',
         'comment-lines': 'comment-lines',
@@ -6,7 +6,10 @@
         'copy-to-clipboard': 'copy-to-clipboard',
     } as const;
 
-    type Name = keyof typeof map;
+    export type Name = keyof typeof map;
+</script>
+
+<script lang="ts">
     type Size = 16 | 24;
 
     type Props = {
