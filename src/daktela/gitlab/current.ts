@@ -1,4 +1,4 @@
-import { ProjectRef, SHA } from '@gitlab/types.ts';
+import type { ProjectRef, SHA } from '@gitlab/types';
 
 const Current = {
 	projects: {

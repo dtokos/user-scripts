@@ -1,6 +1,6 @@
 <script lang="ts">
     import GenerateTicketCommentModal from './generate-ticket-comment/GenerateTicketCommentModal.svelte';
-    import { Controls } from './types.ts';
+    import type { Controls } from './types';
 
     type Props = {
         controls: Controls,

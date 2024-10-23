@@ -1,5 +1,6 @@
-import icons from './icons.ts';
-import buttons, { Variant as ButtonVariant } from './buttons.ts';
+import icons from './icons';
+import buttons from './buttons';
+import type { Variant as ButtonVariant } from './buttons';
 
 export type ModalBuilder = {
 	setTitle: (title: string) => ModalBuilder;

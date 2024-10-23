@@ -1,4 +1,4 @@
-import { Branch, Comment, Commit, Ref, RefType, MergeRequest, ProjectRef, SHA } from './types.ts';
+import type { Branch, Comment, Commit, Ref, RefType, MergeRequest, ProjectRef, SHA } from './types';
 
 const BASE_URL = '/api/v4';
 

@@ -1,9 +1,9 @@
-import { ProjectRef, SHA } from '@gitlab/types.ts';
-import Comments from '../../comments.ts';
-import { Comment } from '../../types.ts';
-import openCopyModal from '../../copy-modal.ts';
-import render from '../../render.ts';
-import UI from '../../../../services/gitlab/ui.ts';
+import type { ProjectRef, SHA } from '@gitlab/types';
+import Comments from '../../comments';
+import type { Comment } from '../../types';
+import openCopyModal from '../../copy-modal';
+import render from '../../render';
+import UI from '../../../../services/gitlab/ui';
 
 async function copyCommitAsComment(project: ProjectRef, commit: SHA): Promise<void> {
 	const base = await Comments.assembleBase(project, commit);

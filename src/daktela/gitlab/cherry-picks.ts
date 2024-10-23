@@ -1,6 +1,6 @@
-import { Branch, Comment, ProjectRef, Ref, SHA } from '../../services/gitlab/types.ts';
-import GitLab from '../../services/gitlab/gitlab.ts';
-import { CommitWithBranch } from './types.ts';
+import type { Branch, Comment, ProjectRef, Ref, SHA } from '../../services/gitlab/types';
+import GitLab from '../../services/gitlab/gitlab';
+import type { CommitWithBranch } from './types';
 
 const CherryPicks = {
 	async findRefs(project: ProjectRef, sha: SHA): Promise<CommitWithBranch<Ref[]>[]> {

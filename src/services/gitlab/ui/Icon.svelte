@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
     const map = {
         'chevron-down': 'chevron-down',
         'comment-lines': 'comment-lines',

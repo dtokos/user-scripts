@@ -1,9 +1,8 @@
-import { ProjectRef, Ref, SHA } from '../../services/gitlab/types.ts';
-import GitLab from '../../services/gitlab/gitlab.ts';
-import Gitlab from '../../services/gitlab/gitlab.ts';
-import CherryPicks from './cherry-picks.ts';
-import { Base, Comment } from './types.ts';
-import Parse from './parse.ts';
+import type { ProjectRef, Ref, SHA } from '../../services/gitlab/types';
+import GitLab from '../../services/gitlab/gitlab';
+import CherryPicks from './cherry-picks';
+import type { Base, Comment } from './types';
+import Parse from './parse';
 
 const Comments = {
 	async assembleBase(project: ProjectRef, sha: SHA): Promise<Base<Ref[]>> {
@@ -23,7 +22,7 @@ const Comments = {
 	},
 	async assembleComment(project: ProjectRef, base: Base<Ref>): Promise<Comment> {
 		const [branch, cherryPicks] = await Promise.all([
-			Gitlab.branches.findByName(project, base.branch.name),
+			GitLab.branches.findByName(project, base.branch.name),
 			CherryPicks.deRefAll(project, base.cherryPicks),
 		]);
 		const message = Parse.message(base.commit);

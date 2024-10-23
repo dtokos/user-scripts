@@ -1,6 +1,6 @@
-import tooltip from './tooltip.ts';
-import icons from './icons.ts';
-import margins from './margins.ts';
+import tooltip from './tooltip';
+import icons from './icons';
+import margins from './margins';
 
 const variantMap = {
 	'default': 'btn-default',

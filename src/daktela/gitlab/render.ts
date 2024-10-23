@@ -1,5 +1,5 @@
-import { Comment, CommitWithBranch } from './types.ts';
-import { Branch, Commit } from '../../services/gitlab/types.ts';
+import type { Comment, CommitWithBranch } from './types';
+import type { Branch, Commit } from '../../services/gitlab/types';
 
 // noinspection SpellCheckingInspection
 const BODY_FONTS = [

@@ -1,7 +1,7 @@
-import Current from '../../current.ts';
-import copyCommitAsComment from './feature.ts';
-import { ProjectRef, SHA } from '../../../../services/gitlab/types.ts';
-import UI from '../../../../services/gitlab/ui.ts';
+import Current from '../../current';
+import copyCommitAsComment from './feature';
+import type { ProjectRef, SHA } from '../../../../services/gitlab/types';
+import UI from '../../../../services/gitlab/ui';
 
 function inject(): void {
 	injectOnCommitIndexPage();

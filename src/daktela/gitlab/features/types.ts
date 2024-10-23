@@ -1,4 +1,4 @@
-import type { GenerateTicketCommentModalControls } from './generate-ticket-comment/controls.svelte.ts';
+import type { GenerateTicketCommentModalControls } from './generate-ticket-comment/controls.svelte';
 import type { Name } from '@gitlab/ui/Icon.svelte';
 
 export type Feature = {

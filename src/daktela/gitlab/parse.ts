@@ -1,5 +1,5 @@
-import { Message } from './types.ts';
-import { Commit } from '../../services/gitlab/types.ts';
+import type { Message } from './types';
+import type { Commit } from '../../services/gitlab/types';
 
 const Parse = {
 	message(commit: Commit): Message {

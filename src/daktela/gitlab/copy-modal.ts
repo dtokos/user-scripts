@@ -1,4 +1,4 @@
-import UI from '../../services/gitlab/ui.ts';
+import UI from '../../services/gitlab/ui';
 
 function openCopyModal(content: string, description: HTMLElement|undefined = undefined): void {
 	const container = UI.containers.justifyBetween(

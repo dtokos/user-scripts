@@ -2,7 +2,7 @@
     import Dropdown from '@gitlab/ui/dropdown';
     import DaktelaIcon from '@gitlab/ui/DaktelaIcon.svelte';
     import Icon from '@gitlab/ui/Icon.svelte';
-    import type { Feature } from './types.ts';
+    import type { Feature } from './types';
 
     type Props = {
         features: Feature[],

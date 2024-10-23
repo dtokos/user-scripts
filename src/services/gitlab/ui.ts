@@ -1,11 +1,11 @@
-import icons from './ui/icons.ts';
-import margins from './ui/margins.ts';
-import buttons from './ui/buttons.ts';
-import tooltip from './ui/tooltip.ts';
-import modals from './ui/modals.ts';
-import inputs from './ui/inputs.ts';
-import containers from './ui/containers.ts';
-import links from './ui/links.ts';
+import icons from './ui/icons';
+import margins from './ui/margins';
+import buttons from './ui/buttons';
+import tooltip from './ui/tooltip';
+import modals from './ui/modals';
+import inputs from './ui/inputs';
+import containers from './ui/containers';
+import links from './ui/links';
 
 const UI = {
 	margins,

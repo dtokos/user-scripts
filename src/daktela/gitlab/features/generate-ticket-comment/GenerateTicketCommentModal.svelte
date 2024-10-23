@@ -1,5 +1,5 @@
-<script lang="ts" context="module">
-    import type { ProjectRef, SHA } from '@gitlab/types.ts';
+<script lang="ts" module>
+    import type { ProjectRef, SHA } from '@gitlab/types';
 
     export type Args = {
         projectRef: ProjectRef,
@@ -11,8 +11,8 @@
     import Modal from '@gitlab/ui/modal';
     import Loading from './Steps/Loading.svelte';
     import Result from './Steps/Result.svelte';
-    import Comments from '../../comments.ts';
-    import type { Comment } from '../../types.ts';
+    import Comments from '../../comments';
+    import type { Comment } from '../../types';
 
     type Props = {
         args?: Args,
