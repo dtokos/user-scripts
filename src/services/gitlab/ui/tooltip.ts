@@ -1,11 +1,9 @@
-const placementMap = {
-	top: 'top',
-	left: 'left',
-	right: 'right',
-	bottom: 'bottom',
-} as const;
-
-type Placement = keyof typeof placementMap;
+type Placement = (
+	| 'top'
+	| 'left'
+	| 'right'
+	| 'bottom'
+);
 
 const tooltip = {
 	attach(element: HTMLElement, title: string, placement: Placement = 'top'): void {

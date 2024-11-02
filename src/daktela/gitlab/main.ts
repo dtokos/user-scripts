@@ -4,3 +4,4 @@ import injectTest from './features/inject';
 
 // injectCopyCommitAsComment();
 injectTest();
+

@@ -33,7 +33,7 @@ async function get<TResponse>(endpoint: string, query: Record<string, string> = 
 	Object.entries(query)
 		.forEach(([name, value]) => url.searchParams.append(name, value));
 
-	let response = await fetch(url);
+	const response = await fetch(url);
 
 	return await response.json();
 }
