@@ -8,7 +8,7 @@ import CloseIcon from './CloseIcon.svelte';
 import Body from './Body.svelte';
 import Footer from './Footer.svelte';
 
-export default {
+export const Modal = {
 	Root: Dialog.Root,
 	Portal: Dialog.Portal,
 	Overlay,

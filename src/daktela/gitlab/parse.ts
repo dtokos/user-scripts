@@ -1,7 +1,7 @@
 import type { Message } from './types';
-import type { Commit } from '../../services/gitlab/types';
+import type { Commit } from '@gitlab/types';
 
-const Parse = {
+export const Parse = {
 	message(commit: Commit): Message {
 		const message: Message = {title: '', body: '', ticket: undefined, extra: {}};
 		const lines = commit.message.split('\n')
@@ -117,5 +117,3 @@ function parseBody(message: Message, lines: string[]): boolean {
 
 	return nextLine !== undefined;
 }
-
-export default Parse;

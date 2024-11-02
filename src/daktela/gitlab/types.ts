@@ -1,4 +1,4 @@
-import type { Branch, Commit, MergeRequest } from '../../services/gitlab/types';
+import type { Branch, Commit, MergeRequest } from '@gitlab/types';
 
 export type CommitWithBranch<TBranch> = TBranch extends Array<infer TItem>
 	? { commit: Commit; branches: TItem[]; }

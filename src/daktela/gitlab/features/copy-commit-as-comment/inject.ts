@@ -1,9 +1,9 @@
-import Current from '../../current';
-import copyCommitAsComment from './feature';
-import type { ProjectRef, SHA } from '../../../../services/gitlab/types';
-import UI from '../../../../services/gitlab/ui';
+import { Current } from '../../current';
+import { copyCommitAsComment } from './feature';
+import type { ProjectRef, SHA } from '@gitlab/types';
+import { UI } from '@gitlab/ui';
 
-function inject(): void {
+export function inject(): void {
 	injectOnCommitIndexPage();
 	injectOnCommitDetailPage();
 	injectToProjectLastCommit()
@@ -108,5 +108,3 @@ function makeButton(ref: ProjectRef, sha: SHA): HTMLButtonElement {
 		await copyCommitAsComment(ref, sha);
 	});
 }
-
-export default inject;

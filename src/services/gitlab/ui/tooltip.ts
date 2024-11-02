@@ -5,7 +5,7 @@ type Placement = (
 	| 'bottom'
 );
 
-const tooltip = {
+export const tooltip = {
 	attach(element: HTMLElement, title: string, placement: Placement = 'top'): void {
 		element.dataset.toggle = 'tooltip';
 		element.dataset.title = title;
@@ -13,5 +13,3 @@ const tooltip = {
 		element.dataset.container = 'body';
 	},
 } as const;
-
-export default tooltip;

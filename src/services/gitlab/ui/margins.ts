@@ -12,7 +12,7 @@ const marginMap = {
 
 type Margin = keyof typeof marginMap;
 
-const margins = {
+export const margins = {
 	l(size: Margin): string {
 		return `gl-ml-${marginMap[size]}`;
 	},
@@ -23,5 +23,3 @@ const margins = {
 		return `gl-mb-${marginMap[size]}`;
 	},
 } as const;
-
-export default margins;

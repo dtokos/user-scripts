@@ -6,7 +6,7 @@ export type GenerateTicketCommentModalControls = {
 	close: () => void,
 };
 
-function makeControls(): GenerateTicketCommentModalControls {
+export function makeControls(): GenerateTicketCommentModalControls {
 	let state: Args | undefined = $state(undefined);
 
 	function open(args: Args): void {
@@ -23,5 +23,3 @@ function makeControls(): GenerateTicketCommentModalControls {
 		close,
 	};
 }
-
-export default makeControls;

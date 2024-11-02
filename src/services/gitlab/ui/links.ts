@@ -1,4 +1,4 @@
-const links = {
+export const links = {
 	external(href: string, title: string|undefined = undefined) {
 		const anchor = document.createElement('a');
 		anchor.href = href;
@@ -9,5 +9,3 @@ const links = {
 		return anchor;
 	},
 } as const;
-
-export default links;

@@ -1,6 +1,6 @@
-import UI from '../../services/gitlab/ui';
+import { UI } from '@gitlab/ui';
 
-function openCopyModal(content: string, description: HTMLElement|undefined = undefined): void {
+export function openCopyModal(content: string, description: HTMLElement|undefined = undefined): void {
 	const container = UI.containers.justifyBetween(
 		buildDescription(description),
 		UI.buttons.copy(content),
@@ -26,5 +26,3 @@ function buildDescription(content: HTMLElement|undefined): HTMLDivElement {
 
 	return wrapper;
 }
-
-export default openCopyModal;

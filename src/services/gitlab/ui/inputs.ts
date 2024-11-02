@@ -1,4 +1,4 @@
-const inputs = {
+export const inputs = {
 	textArea(value: string = '', readOnly: boolean = false): HTMLTextAreaElement {
 		const textArea = document.createElement('textarea');
 		textArea.classList.add('gl-form-input', 'gl-form-textarea', 'form-control');
@@ -8,5 +8,3 @@ const inputs = {
 		return textArea;
 	},
 } as const;
-
-export default inputs;

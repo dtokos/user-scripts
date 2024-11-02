@@ -1,6 +1,6 @@
-import tooltip from './tooltip';
-import icons from './icons';
-import margins from './margins';
+import { tooltip } from './tooltip';
+import { icons } from './icons';
+import { margins } from './margins';
 
 const variantMap = {
 	'default': 'btn-default',
@@ -14,7 +14,7 @@ type AsyncState = {
 	disabled: boolean,
 };
 
-const buttons = {
+export const buttons = {
 	default(title: string = ''): HTMLButtonElement {
 		return this.make(title, 'default');
 	},
@@ -79,5 +79,3 @@ function setState(button: HTMLButtonElement, state: AsyncState): void {
 	button.insertAdjacentText('beforeend', state.title);
 	button.disabled = state.disabled;
 }
-
-export default buttons;

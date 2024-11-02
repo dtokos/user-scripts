@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { Comment } from '../../../types';
-    import renderComment from '../../../render';
+    import { render as renderComment } from '../../../render';
     import Icon from '@gitlab/ui/Icon.svelte';
 
     type Props = {

@@ -8,10 +8,10 @@
 </script>
 
 <script lang="ts">
-    import Modal from '@gitlab/ui/modal';
+    import { Modal } from '@gitlab/ui/modal';
     import Loading from './Steps/Loading.svelte';
     import Result from './Steps/Result.svelte';
-    import Comments from '../../comments';
+    import { Comments } from '../../comments';
     import type { Comment } from '../../types';
 
     type Props = {

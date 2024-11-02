@@ -1,5 +1,5 @@
 import type { Comment, CommitWithBranch } from './types';
-import type { Branch, Commit } from '../../services/gitlab/types';
+import type { Branch, Commit } from '@gitlab/types';
 
 // noinspection SpellCheckingInspection
 const BODY_FONTS = [
@@ -26,7 +26,7 @@ const BODY_STYLES = [
 	'border-color:#444444',
 ].join(';');
 
-function render(comment: Comment): string {
+export function render(comment: Comment): string {
 	return (
 		renderTitle(comment)
 		+ renderCommits(comment)
@@ -112,5 +112,3 @@ function linkify(value: string): string {
 		return value;
 	}
 }
-
-export default render;

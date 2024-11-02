@@ -1,10 +1,10 @@
-import type { ProjectRef, Ref, SHA } from '../../services/gitlab/types';
-import GitLab from '../../services/gitlab/gitlab';
-import CherryPicks from './cherry-picks';
+import type { ProjectRef, Ref, SHA } from '@gitlab/types';
+import { GitLab } from '@gitlab/gitlab';
+import { CherryPicks } from './cherry-picks';
 import type { Base, Comment } from './types';
-import Parse from './parse';
+import { Parse } from './parse';
 
-const Comments = {
+export const Comments = {
 	async assembleBase(project: ProjectRef, sha: SHA): Promise<Base<Ref[]>> {
 		const commit = await GitLab.commits.findBySHA(project, sha);
 
@@ -60,5 +60,3 @@ const Comments = {
 		};
 	},
 } as const;
-
-export default Comments;

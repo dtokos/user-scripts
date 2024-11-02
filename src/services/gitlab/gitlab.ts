@@ -2,7 +2,7 @@ import type { Branch, Comment, Commit, Ref, RefType, MergeRequest, ProjectRef, S
 
 const BASE_URL = '/api/v4';
 
-const GitLab = {
+export const GitLab = {
 	commits: {
 		async findBySHA(project: ProjectRef, sha: SHA): Promise<Commit> {
 			return get(`projects/${e(project)}/repository/commits/${sha}`);
@@ -37,5 +37,3 @@ async function get<TResponse>(endpoint: string, query: Record<string, string> = 
 
 	return await response.json();
 }
-
-export default GitLab;

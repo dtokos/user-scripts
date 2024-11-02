@@ -3,7 +3,7 @@ import Trigger from './Trigger.svelte';
 import Content from './Content.svelte';
 import Item from './Item.svelte';
 
-export default {
+export const Dropdown = {
 	Root: DropdownMenu.Root,
 	Trigger,
 	Content,

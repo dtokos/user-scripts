@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Dropdown from '@gitlab/ui/dropdown';
+    import { Dropdown } from '@gitlab/ui/dropdown';
     import DaktelaIcon from '@gitlab/ui/DaktelaIcon.svelte';
     import Icon from '@gitlab/ui/Icon.svelte';
     import type { Feature } from './types';

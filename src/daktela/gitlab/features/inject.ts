@@ -1,11 +1,11 @@
 import FeatureDropdown from './FeatureDropdown.svelte';
 import { mount } from 'svelte';
-import Current from '../current';
+import { Current } from '../current';
 import Modals from './Modals.svelte';
-import makeGenerateTicketCommentModalControls from './generate-ticket-comment/controls.svelte';
+import { makeControls as makeGenerateTicketCommentModalControls } from './generate-ticket-comment/controls.svelte';
 import type { Controls } from './types';
 
-function inject(): void {
+export function inject(): void {
 	const controls = makeControls();
 
 	injectOnCommitDetailPage(controls);
@@ -102,5 +102,3 @@ function injectModals(controls: Controls): void {
 		},
 	});
 }
-
-export default inject;

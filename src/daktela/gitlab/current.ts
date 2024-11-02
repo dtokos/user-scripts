@@ -1,6 +1,6 @@
 import type { ProjectRef, SHA } from '@gitlab/types';
 
-const Current = {
+export const Current = {
 	projects: {
 		ref(): ProjectRef {
 			const matches = location.pathname.match(/^\/?(.*?)(?:\/-\/|$)/);
@@ -24,5 +24,3 @@ const Current = {
 		},
 	},
 } as const;
-
-export default Current;

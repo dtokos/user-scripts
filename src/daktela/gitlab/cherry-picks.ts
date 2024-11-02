@@ -1,8 +1,8 @@
-import type { Branch, Comment, ProjectRef, Ref, SHA } from '../../services/gitlab/types';
-import GitLab from '../../services/gitlab/gitlab';
+import type { Branch, Comment, ProjectRef, Ref, SHA } from '@gitlab/types';
+import { GitLab } from '@gitlab/gitlab';
 import type { CommitWithBranch } from './types';
 
-const CherryPicks = {
+export const CherryPicks = {
 	async findRefs(project: ProjectRef, sha: SHA): Promise<CommitWithBranch<Ref[]>[]> {
 		const SHAs = await findSHAsForCommit(project, sha);
 
@@ -45,5 +45,3 @@ function parseSHAsFromComments(comments: Comment[]): SHA[] {
 		return SHAs;
 	}, [] as SHA[]);
 }
-
-export default CherryPicks;

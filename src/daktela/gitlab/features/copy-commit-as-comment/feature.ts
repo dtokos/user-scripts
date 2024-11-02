@@ -1,11 +1,11 @@
 import type { ProjectRef, SHA } from '@gitlab/types';
-import Comments from '../../comments';
+import { Comments } from '../../comments';
 import type { Comment } from '../../types';
-import openCopyModal from '../../copy-modal';
-import render from '../../render';
-import UI from '../../../../services/gitlab/ui';
+import { openCopyModal } from '../../copy-modal';
+import { render } from '../../render';
+import { UI } from '@gitlab/ui';
 
-async function copyCommitAsComment(project: ProjectRef, commit: SHA): Promise<void> {
+export async function copyCommitAsComment(project: ProjectRef, commit: SHA): Promise<void> {
 	const base = await Comments.assembleBase(project, commit);
 	//const autoResolvedBase = Comments.tryAutoResolveBase(base);
 	const autoResolvedBase = Comments.resolveBaseUsingFirst(base);
@@ -36,5 +36,3 @@ function ticketDescription(comment: Comment): HTMLSpanElement|undefined {
 
 	return span;
 }
-
-export default copyCommitAsComment;

@@ -1,5 +1,5 @@
-import icons from './icons';
-import buttons from './buttons';
+import { icons } from './icons';
+import { buttons } from './buttons';
 import type { Variant as ButtonVariant } from './buttons';
 
 export type ModalBuilder = {
@@ -22,7 +22,7 @@ type Config = {
 	buttons: HTMLButtonElement[],
 };
 
-const modals = {
+export const modals = {
 	make(): ModalBuilder {
 		const config: Config = {
 			title: '',
@@ -141,5 +141,3 @@ function dismissClicked(dialog: HTMLDialogElement, target: Element): boolean {
 	const dismiss = target.closest('[data-dismiss="modal"], dialog');
 	return dismiss !== null && dismiss !== dialog;
 }
-
-export default modals;

@@ -1,4 +1,4 @@
-const icons = {
+export const icons = {
 	daktela(): HTMLImageElement {
 		const icon = document.createElement('img');
 		icon.src = '/uploads/-/system/project/avatar/10/256x256.png';
@@ -57,5 +57,3 @@ function svgIcon(iconName: string): SVGSVGElement {
 
 	return svg;
 }
-
-export default icons;
